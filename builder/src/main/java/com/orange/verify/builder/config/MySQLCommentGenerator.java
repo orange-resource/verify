@@ -1,18 +1,19 @@
 package com.orange.verify.builder.config;
 
-import com.orange.verify.common.BaseEntity;
-import lombok.extern.java.Log;
 import org.mybatis.generator.api.FullyQualifiedTable;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
-@Log
 public class MySQLCommentGenerator extends EmptyCommentGenerator {
+
+    private static final Logger log = LoggerFactory.getLogger(MySQLCommentGenerator.class);
 
     private Properties properties;
 
