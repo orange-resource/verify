@@ -34,6 +34,7 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.8.1</version>
         </dependency>
+
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
@@ -46,6 +47,7 @@
             <artifactId>javax.mail</artifactId>
             <version>1.6.2</version>
         </dependency>
+
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>

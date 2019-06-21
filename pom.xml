@@ -9,13 +9,11 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
-
         <module>api</module>
         <module>admin</module>
         <module>admin-web</module>
         <module>builder</module>
         <module>common</module>
-
     </modules>
 
 

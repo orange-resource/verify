@@ -19,8 +19,8 @@ import com.orange.verify.api.sr.*;
 import com.orange.verify.api.vo.AccountVo;
 import com.orange.verify.api.vo.open.*;
 import com.orange.verify.common.rsa.RsaUtil;
-import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -55,9 +55,6 @@ public class AccountImpl extends ServiceImpl<AccountMapper, Account> implements 
 
     @Autowired
     private BaiduMapApiServiceL baiduMapApiServiceL;
-
-    @Autowired
-    private InterProcessMutex lock;
 
     @Override
     public Page<AccountVo> page(AccountVo accountVo, Page page) {
@@ -101,7 +98,6 @@ public class AccountImpl extends ServiceImpl<AccountMapper, Account> implements 
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public ServiceResult register(AccountRegisterVo accountRegisterVo) {
 
         ServiceResult result = new ServiceResult<>();
@@ -123,32 +119,13 @@ public class AccountImpl extends ServiceImpl<AccountMapper, Account> implements 
             return result;
         }
 
-        //采用分布式锁进行用户名的唯一控制
-        try {
-            boolean acquire = lock.acquire(5, TimeUnit.SECONDS);
-            if (acquire == true) {
-                QueryWrapper<Account> username = new QueryWrapper<Account>().eq("username",
-                        accountRegisterVo.getUsername());
-                Integer selectCount = super.baseMapper.selectCount(username);
-                //用户名是否存在
-                if (selectCount > 0) {
-                    result.setCode(AccountImplRegisterEnum.ACCOUNT_ALREADY_EXIST);
-                    return result;
-                }
-            } else {
-                result.setCode(AccountImplRegisterEnum.NIMIETY);
-                return result;
-            }
-        } catch (Exception e) {
-            result.setCode(AccountImplRegisterEnum.SERVER_ERROR);
+        QueryWrapper<Account> username = new QueryWrapper<Account>().eq("username",
+                accountRegisterVo.getUsername());
+        Integer selectAccountCount = super.baseMapper.selectCount(username);
+        //用户名是否存在
+        if (selectAccountCount > 0) {
+            result.setCode(AccountImplRegisterEnum.ACCOUNT_ALREADY_EXIST);
             return result;
-        } finally {
-            try {
-                lock.release();
-            } catch (Exception e) {
-                result.setCode(AccountImplRegisterEnum.SERVER_ERROR);
-                return result;
-            }
         }
 
         Soft soft = softMapper.selectById(accountRegisterVo.getSoftId());
@@ -206,7 +183,13 @@ public class AccountImpl extends ServiceImpl<AccountMapper, Account> implements 
             accountRegisterLog.setIp(account.getCreateIp());
             accountRegisterLog.setIpInfo(addressByIp);
             accountRegisterLog.setSoftId(account.getSoftId());
-            accountRegisterLogMapper.insert(accountRegisterLog);
+
+            try {
+                accountRegisterLogMapper.insert(accountRegisterLog);
+            }catch (DuplicateKeyException e) {
+                result.setCode(AccountImplRegisterEnum.ACCOUNT_ALREADY_EXIST);
+                return result;
+            }
 
             result.setCode(AccountImplRegisterEnum.REGISTER_SUCCESS);
             return result;

@@ -1,4 +1,4 @@
-# Verify 1.6
+# Verify 1.7
 
 #### 项目介绍
 
@@ -30,7 +30,7 @@
 2. admin-web(提供给外部访问接口，controller)
 3. api(提供给各个服务的vo,bean等等使用)
 4. commom(自写的工具包)
-5. buider(数据库和java bean一键生成的项目)
+5. buider(根据数据库反向生成bean)
 6. admin-web-page(后台管理页面(vue编写))
 7. sdk(各大语言的sdk(1.易语言sdk))
 
@@ -52,6 +52,7 @@
 
 #### 版本日志
 
+* 1.7 优化项目builder项目，优化注册用户接口，增加c# sdk
 * 1.6 优化代码，修复已知问题，优化易语言demo
 * 1.5 优化代码 增加运行日志，增加开放接口后台管理，增强软件日志，优化易语言demo,优化后台页面增加loading
 * 1.3 修复易语言 demo和sdk,修复sql语句,增加批量删除卡密
