@@ -10,11 +10,11 @@ public class RedisKeyConstant {
     /**
      * admin web 开放接口管理key
      */
-    public final static String OPEN_INTERFACE = "orange.tbk:open.interface:";
+    public final static String OPEN_INTERFACE = "orange.verify:open.interface:";
 
     /**
      * admin web 访问人IP录入key
      */
-    public final static String IP_LIBRARY = "orange.tbk:ip-library:";
+    public final static String IP_LIBRARY = "orange.verify:ip-library:";
 
 }

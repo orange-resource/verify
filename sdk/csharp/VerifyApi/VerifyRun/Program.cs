@@ -18,8 +18,8 @@ namespace VerifyRun
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             InitVerify initVerify =new InitVerify();
-            initVerify.Site = "http://verifyopen.wywxy.top/verify";
-            initVerify.SoftId = "1085459168090959873";
+            initVerify.Site = "http://localhost:80/verify";
+            initVerify.SoftId = "1142171718408757250";
             Application.Run(new VerifyForm(initVerify));
         }
     }

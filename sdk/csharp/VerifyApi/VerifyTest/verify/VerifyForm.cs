@@ -78,10 +78,6 @@ namespace VerifyTest.verify
                 }
             });
 
-            //AutoUpdater.ShowSkipButton = false; // 不显示忽略按钮
-            //AutoUpdater.ShowRemindLaterButton = false;  // 不显示以后更新按钮
-            //AutoUpdater.Start("https://chek-soft.oss-cn-hangzhou.aliyuncs.com/%E6%B7%98%E5%AE%9D%E5%AF%BB%E6%89%BE%E5%AE%9D%E8%B4%9D%20%E5%88%B7%E5%8D%95%E5%8A%A9%E6%89%8B/auto.xml");
-
             // 初始化配置
             try
             {
@@ -158,7 +154,7 @@ namespace VerifyTest.verify
                         }
                     }
                     // 载入窗口
-                    VerifyOverAll.runForm.ShowDialog();
+                    VerifyOverAll.runForm.Show();
 
                     // 主窗口隐藏
                     this.Hide();
@@ -185,11 +181,6 @@ namespace VerifyTest.verify
             {
                 MessageBox.Show(VerifyOverAll.registeCloseMsg.Replace("\n", "\r\n"), "注册通知");
             }
-        }
-
-        private void VerifyForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            System.Environment.Exit(0);
         }
 
         private void linkLabelOpenUpdatePassword_Click(object sender, EventArgs e)
@@ -232,6 +223,11 @@ namespace VerifyTest.verify
         {
             VerifyReward verifyReward = new VerifyReward();
             verifyReward.ShowDialog();
+        }
+
+        private void VerifyForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            System.Environment.Exit(0);
         }
 
         /////////

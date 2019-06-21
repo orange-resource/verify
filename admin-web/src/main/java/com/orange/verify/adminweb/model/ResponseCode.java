@@ -101,6 +101,8 @@ public enum ResponseCode {
 
     INTERFACE_CLOSE(938,"访问失败，接口已被关闭！"),
 
+    USER_LOGIN_ERROR(939, "登陆失败"),
+
     //基础
     QUERY_SUCCESS(9,"查询成功"),
     SUCCESS(10,"操作成功"),

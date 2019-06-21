@@ -98,18 +98,19 @@ public class AccountImpl extends ServiceImpl<AccountMapper, Account> implements 
     }
 
     @Override
+    @Transactional
     public ServiceResult register(AccountRegisterVo accountRegisterVo) {
 
         ServiceResult result = new ServiceResult<>();
 
         String privateKey = (String) redisTemplate.opsForValue().get(accountRegisterVo.getPublicKey());
-        //钥匙不存在直接返回
+        // 钥匙不存在直接返回
         if (StrUtil.hasEmpty(privateKey)) {
             result.setCode(AccountImplRegisterEnum.KEY_EMPTY);
             return result;
         }
 
-        //验证码不匹配直接返回
+        // 验证码不匹配直接返回
         String vc = (String) redisTemplate.opsForValue().get("vc=" + accountRegisterVo.getPublicKey());
         if (StrUtil.hasEmpty(vc)) {
             result.setCode(AccountImplRegisterEnum.VC_EMPTY);
@@ -122,7 +123,7 @@ public class AccountImpl extends ServiceImpl<AccountMapper, Account> implements 
         QueryWrapper<Account> username = new QueryWrapper<Account>().eq("username",
                 accountRegisterVo.getUsername());
         Integer selectAccountCount = super.baseMapper.selectCount(username);
-        //用户名是否存在
+        // 用户名是否存在
         if (selectAccountCount > 0) {
             result.setCode(AccountImplRegisterEnum.ACCOUNT_ALREADY_EXIST);
             return result;
@@ -142,7 +143,7 @@ public class AccountImpl extends ServiceImpl<AccountMapper, Account> implements 
             return result;
         }
 
-        //进行解密 >>> password 和 code >>> 解密成真实文本
+        // 进行解密 >>> password 和 code >>> 解密成真实文本
         String password = null;
         String code = null;
         try {
@@ -160,7 +161,7 @@ public class AccountImpl extends ServiceImpl<AccountMapper, Account> implements 
             return result;
         }
 
-        //查询ip信息
+        // 查询ip信息
         String addressByIp = "";
         try {
             addressByIp = baiduMapApiServiceL.getIpInfo(accountRegisterVo.getIp());
@@ -169,29 +170,31 @@ public class AccountImpl extends ServiceImpl<AccountMapper, Account> implements 
             return result;
         }
 
-        //进行转型然后插入数据库
+        // 进行转型然后插入数据库
         accountRegisterVo.setPassword(password);
         accountRegisterVo.setCode(code);
 
         Account account = transition.fromVo(accountRegisterVo);
         account.setCreateIpInfo(addressByIp);
 
-        int insert = super.baseMapper.insert(account);
-        if (insert > 0) {
-            AccountRegisterLog accountRegisterLog = new AccountRegisterLog();
-            accountRegisterLog.setAccountId(account.getId());
-            accountRegisterLog.setIp(account.getCreateIp());
-            accountRegisterLog.setIpInfo(addressByIp);
-            accountRegisterLog.setSoftId(account.getSoftId());
+        // 到这里直接删除对应验证码
+        redisTemplate.delete("vc=" + accountRegisterVo.getPublicKey());
+        try {
+            int insert = super.baseMapper.insert(account);
+            if (insert > 0) {
+                AccountRegisterLog accountRegisterLog = new AccountRegisterLog();
+                accountRegisterLog.setAccountId(account.getId());
+                accountRegisterLog.setIp(account.getCreateIp());
+                accountRegisterLog.setIpInfo(addressByIp);
+                accountRegisterLog.setSoftId(account.getSoftId());
 
-            try {
                 accountRegisterLogMapper.insert(accountRegisterLog);
-            }catch (DuplicateKeyException e) {
-                result.setCode(AccountImplRegisterEnum.ACCOUNT_ALREADY_EXIST);
+
+                result.setCode(AccountImplRegisterEnum.REGISTER_SUCCESS);
                 return result;
             }
-
-            result.setCode(AccountImplRegisterEnum.REGISTER_SUCCESS);
+        }catch (DuplicateKeyException e) {
+            result.setCode(AccountImplRegisterEnum.ACCOUNT_ALREADY_EXIST);
             return result;
         }
 
@@ -205,14 +208,14 @@ public class AccountImpl extends ServiceImpl<AccountMapper, Account> implements 
         ServiceResult result = new ServiceResult<>();
 
         String privateKey = (String) redisTemplate.opsForValue().get(accountLoginVo.getPublicKey());
-        //钥匙不存在直接返回
+        // 钥匙不存在直接返回
         if (StrUtil.hasEmpty(privateKey)) {
             result.setCode(AccountImplLoginEnum.KEY_EMPTY);
             return result;
         }
 
         Soft soft = softMapper.selectById(accountLoginVo.getSoftId());
-        //软件不存在直接返回
+        // 软件不存在直接返回
         if (soft == null) {
             result.setCode(AccountImplLoginEnum.SOFT_EMPTY);
             return result;
@@ -222,7 +225,7 @@ public class AccountImpl extends ServiceImpl<AccountMapper, Account> implements 
             return result;
         }
 
-        //判断用户不存在直接返回
+        // 判断用户不存在直接返回
         Integer selectCount = super.baseMapper.selectCount(new QueryWrapper<Account>().eq("username",
                 accountLoginVo.getUsername()).eq("soft_id",accountLoginVo.getSoftId()));
         if (selectCount < 1) {
@@ -230,7 +233,7 @@ public class AccountImpl extends ServiceImpl<AccountMapper, Account> implements 
             return result;
         }
 
-        //进行解密 >>> password 和 code >>> 解密成真实文本
+        // 进行解密 >>> password 和 code >>> 解密成真实文本
         String password = null;
         String code = null;
         try {
@@ -255,7 +258,7 @@ public class AccountImpl extends ServiceImpl<AccountMapper, Account> implements 
             return result;
         }
 
-        //只支持单机进行机器码控制打开软件
+        // 只支持单机进行机器码控制打开软件
         if (soft.getDosingStrategy() == SoftDosingStrategy.SINGLE.getStatusCode()) {
             QueryWrapper<Account> queryWrapper = new QueryWrapper<Account>().eq("username",
                     accountLoginVo.getUsername()).eq("password",password).eq("soft_id",accountLoginVo.getSoftId());
@@ -293,7 +296,7 @@ public class AccountImpl extends ServiceImpl<AccountMapper, Account> implements 
             }
         }
 
-        //查询ip信息
+        // 查询ip信息
         String addressByIp = "";
         try {
             addressByIp = baiduMapApiServiceL.getIpInfo(accountLoginVo.getIp());
@@ -320,14 +323,14 @@ public class AccountImpl extends ServiceImpl<AccountMapper, Account> implements 
         ServiceResult result = new ServiceResult<>();
 
         String privateKey = (String) redisTemplate.opsForValue().get(accountBindingCardVo.getPublicKey());
-        //钥匙不存在直接返回
+        // 钥匙不存在直接返回
         if (StrUtil.hasEmpty(privateKey)) {
             result.setCode(AccountImplBindingCardEnum.KEY_EMPTY);
             return result;
         }
 
         Soft soft = softMapper.selectById(accountBindingCardVo.getSoftId());
-        //软件不存在直接返回
+        // 软件不存在直接返回
         if (soft == null) {
             result.setCode(AccountImplBindingCardEnum.SOFT_EMPTY);
             return result;
@@ -340,7 +343,7 @@ public class AccountImpl extends ServiceImpl<AccountMapper, Account> implements 
             return result;
         }
 
-        //判断用户不存在直接返回
+        // 判断用户不存在直接返回
         Integer selectCount = super.baseMapper.selectCount(new QueryWrapper<Account>().eq("username",
                 accountBindingCardVo.getUsername()).eq("soft_id",accountBindingCardVo.getSoftId()));
         if (selectCount < 1) {
@@ -348,7 +351,7 @@ public class AccountImpl extends ServiceImpl<AccountMapper, Account> implements 
             return result;
         }
 
-        //进行解密 >>> password 和 code >>> 解密成真实文本
+        // 进行解密 >>> password 和 code >>> 解密成真实文本
         String password = null;
         String code = null;
         try {
@@ -398,7 +401,7 @@ public class AccountImpl extends ServiceImpl<AccountMapper, Account> implements 
             return result;
         }
 
-        //开始使用时间和结束使用期间
+        // 开始使用时间和结束使用期间
         String now = DateUtil.now();
         Date date = DateUtil.parse(now);
         long startTime = date.getTime();
@@ -458,14 +461,14 @@ public class AccountImpl extends ServiceImpl<AccountMapper, Account> implements 
         ServiceResult result = new ServiceResult<>();
 
         String privateKey = (String) redisTemplate.opsForValue().get(accountBindingCodeVo.getPublicKey());
-        //钥匙不存在直接返回
+        // 钥匙不存在直接返回
         if (StrUtil.hasEmpty(privateKey)) {
             result.setCode(AccountImplBindingCodeEnum.KEY_EMPTY);
             return result;
         }
 
         Soft soft = softMapper.selectById(accountBindingCodeVo.getSoftId());
-        //软件不存在直接返回
+        // 软件不存在直接返回
         if (soft == null) {
             result.setCode(AccountImplBindingCodeEnum.SOFT_EMPTY);
             return result;
@@ -478,7 +481,7 @@ public class AccountImpl extends ServiceImpl<AccountMapper, Account> implements 
             return result;
         }
 
-        //判断用户不存在直接返回
+        // 判断用户不存在直接返回
         Integer selectCount = super.baseMapper.selectCount(new QueryWrapper<Account>().eq("username",
                 accountBindingCodeVo.getUsername()).eq("soft_id",accountBindingCodeVo.getSoftId()));
         if (selectCount < 1) {
@@ -486,7 +489,7 @@ public class AccountImpl extends ServiceImpl<AccountMapper, Account> implements 
             return result;
         }
 
-        //进行解密 >>> password 和 code >>> 解密成真实文本
+        // 进行解密 >>> password 和 code >>> 解密成真实文本
         String password = null;
         String code = null;
         try {
@@ -533,7 +536,7 @@ public class AccountImpl extends ServiceImpl<AccountMapper, Account> implements 
         ServiceResult result = new ServiceResult<>();
 
         Soft soft = softMapper.selectById(accountUpdatePasswordVo.getSoftId());
-        //软件不存在直接返回
+        // 软件不存在直接返回
         if (soft == null) {
             result.setCode(AccountImplUpdatePasswordEnum.SOFT_EMPTY);
             return result;

@@ -305,7 +305,7 @@
             this.MaximizeBox = false;
             this.Name = "VerifyForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.VerifyForm_FormClosed);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VerifyForm_FormClosing);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);

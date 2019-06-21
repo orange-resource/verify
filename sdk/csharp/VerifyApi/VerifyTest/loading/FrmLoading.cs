@@ -218,6 +218,7 @@ namespace Loading
             _tmrAction = new ThreadingTimer(
                 state =>
                 {
+                    CheckForIllegalCrossThreadCalls = false;
                     //动画动作  
                     for (var i = 0; i < _dots.Length; i++)
                     {

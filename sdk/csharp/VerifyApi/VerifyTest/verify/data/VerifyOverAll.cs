@@ -11,12 +11,12 @@ namespace VerifyTest.verify.data
         /// <summary>
         /// 访问网址
         /// </summary>
-        public static string site = "http://verifyopen.wywxy.top/verify";
+        public static string site;
 
         /// <summary>
         /// 软件ID
         /// </summary>
-        public static string softId = "1085459168090959873";
+        public static string softId;
 
         /// <summary>
         /// 登陆成功后打开的窗体

@@ -36,7 +36,7 @@ public class UserController {
             // 执行认证登陆
             subject.login(token);
         }catch (Exception e) {
-            return Response.build(ResponseCode.LOGIN_ERROR);
+            return Response.build(ResponseCode.USER_LOGIN_ERROR);
         }
 
         return Response.build(ResponseCode.LOGIN_SUCCESS);

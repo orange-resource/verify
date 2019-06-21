@@ -54,6 +54,9 @@ public class RspHandleAspect {
         String url =
                 pjp.getSignature().getDeclaringTypeName() + "." + pjp.getSignature().getName();
 
+        System.out.println(url);
+        System.out.println(RedisKeyConstant.OPEN_INTERFACE + url);
+
         InterfaceManagement interfaceManagement =
                 (InterfaceManagement) redisTemplate.opsForValue().get(RedisKeyConstant.OPEN_INTERFACE + url);
         if (interfaceManagement != null) {
