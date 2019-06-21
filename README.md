@@ -32,7 +32,7 @@
 4. commom(自写的工具包)
 5. buider(根据数据库反向生成bean)
 6. admin-web-page(后台管理页面(vue编写))
-7. sdk(各大语言的sdk(1.易语言sdk))
+7. sdk(各大语言的sdk(1.易语言sdk 2.c# sdk))
 
 **主要采用的技术有:**
 
