@@ -338,7 +338,7 @@ namespace VerifyApi
             JObject resultJson = (JObject)JsonConvert.DeserializeObject(response);
 
             int code = (int)resultJson["code"];
-            if (code == 9)
+            if (code == 9 || code == 907)
             {
                 notice = (string)resultJson["data"]["notice"];
                 name = (string)resultJson["data"]["name"];

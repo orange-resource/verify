@@ -37,6 +37,8 @@ public class SoftImpl extends ServiceImpl<SoftMapper, Soft> implements SoftServi
             return result;
         } else if (soft.getServiceStatus() == SoftServiceStatus.CLOSE.getStatusCode()) {
             result.setCode(SoftImplGetSoftDescEnum.SOFT_CLOSE);
+            SoftGetSoftDescVo softGetSoftDescVo = transition.toVo(soft);
+            result.setData(softGetSoftDescVo);
             result.setMsg(soft.getServiceCloseMsg());
             return result;
         }

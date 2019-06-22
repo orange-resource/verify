@@ -124,10 +124,10 @@ public class SoftController extends BaseController {
         ServiceResult<SoftGetSoftDescVo> getSoftDesc = softService.getSoftDesc(accountGetSoftDescVo);
         switch (getSoftDesc.getCode()) {
             case SoftImplGetSoftDescEnum.SUCCESS:
-                return Response.build(ResponseCode.QUERY_SUCCESS,getSoftDesc.getData());
+                return Response.build(ResponseCode.QUERY_SUCCESS, getSoftDesc.getData());
 
             case SoftImplGetSoftDescEnum.SOFT_CLOSE:
-                return Response.build(ResponseCode.SOFT_CLOSE);
+                return Response.build(ResponseCode.SOFT_CLOSE, getSoftDesc.getData());
 
             case SoftImplGetSoftDescEnum.SOFT_EMPTY:
                 return Response.build(ResponseCode.SOFT_EMPTY);

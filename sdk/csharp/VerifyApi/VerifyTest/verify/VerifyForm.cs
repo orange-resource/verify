@@ -58,6 +58,12 @@ namespace VerifyTest.verify
                     {
                         MessageBox.Show(VerifyOverAll.serviceCloseMsg.Replace("\n", "\r\n"), "软件开放使用提示");
                         System.Environment.Exit(0);
+                    } else if (VerifyOverAll.serviceStatus == 0)
+                    {
+                        toolStripStatusLabel2.Text = "软件类型：收费软件";
+                    } else if (VerifyOverAll.serviceStatus == 1)
+                    {
+                        toolStripStatusLabel2.Text = "软件类型：免费软件";
                     }
                     if (VerifyOverAll.serviceStatus == 0)
                     {
