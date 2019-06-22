@@ -6,7 +6,7 @@ public class AccountImplLoginEnum implements Serializable {
 
     public static final int LOGIN_SUCCESS = 1;
 
-    public static final int LOGIN_ERROR = 2;
+    public static final int DO_NOT_SUPPORT_REPLACEMENT = 2;
 
     public static final int KEY_EMPTY = 3;
 

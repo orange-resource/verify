@@ -265,7 +265,7 @@ public class AccountImpl extends ServiceImpl<AccountMapper, Account> implements 
             queryWrapper = queryWrapper.eq("code",code);
             Account accountQ = super.baseMapper.selectOne(queryWrapper);
             if (accountQ == null) {
-                result.setCode(AccountImplLoginEnum.LOGIN_ERROR);
+                result.setCode(AccountImplLoginEnum.DO_NOT_SUPPORT_REPLACEMENT);
                 return result;
             }
         }

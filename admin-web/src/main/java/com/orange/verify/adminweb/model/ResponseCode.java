@@ -35,7 +35,7 @@ public enum ResponseCode {
 
     REGISTER_ERROR(905,"注册失败"),
 
-    LOGIN_ERROR(906,"本软件不支持换机器进行使用"),
+    LOGIN_ERROR(906,"登陆失败"),
 
     SOFT_CLOSE(907,"软件关闭开放使用"),
 
@@ -93,15 +93,13 @@ public enum ResponseCode {
 
     VC_MISMATCHES(934,"验证码输入错误"),
 
-    NIMIETY(935,"当前注册人数过多，稍后再试！"),
-
     SERVER_ERROR(936,"服务器错误"),
 
     SOFT_FREE(937,"软件是免费的，无需绑定卡密"),
 
     INTERFACE_CLOSE(938,"访问失败，接口已被关闭！"),
 
-    USER_LOGIN_ERROR(939, "登陆失败"),
+    DO_NOT_SUPPORT_REPLACEMENT(939, "本软件不支持换机器进行使用"),
 
     //基础
     QUERY_SUCCESS(9,"查询成功"),

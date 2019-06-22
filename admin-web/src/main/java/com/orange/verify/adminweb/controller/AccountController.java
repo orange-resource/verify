@@ -178,9 +178,6 @@ public class AccountController extends BaseController {
             case AccountImplRegisterEnum.VC_MISMATCHES:
                 return Response.build(ResponseCode.VC_MISMATCHES);
 
-            case AccountImplRegisterEnum.NIMIETY:
-                return Response.build(ResponseCode.NIMIETY);
-
             case AccountImplRegisterEnum.SERVER_ERROR:
                 return Response.build(ResponseCode.SERVER_ERROR);
 
@@ -210,8 +207,8 @@ public class AccountController extends BaseController {
             case AccountImplLoginEnum.LOGIN_SUCCESS:
                 return Response.build(ResponseCode.LOGIN_SUCCESS);
 
-            case AccountImplLoginEnum.LOGIN_ERROR:
-                return Response.build(ResponseCode.LOGIN_ERROR);
+            case AccountImplLoginEnum.DO_NOT_SUPPORT_REPLACEMENT:
+                return Response.build(ResponseCode.DO_NOT_SUPPORT_REPLACEMENT);
 
             case AccountImplLoginEnum.KEY_EMPTY:
                 return Response.build(ResponseCode.KEY_EMPTY);

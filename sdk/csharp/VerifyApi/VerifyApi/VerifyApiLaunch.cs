@@ -63,10 +63,10 @@ namespace VerifyApi
 
             string response = OrangeRequest.Post(api).AddData(data).LaunchToString();
 
-            JObject resultJson = (JObject)JsonConvert.DeserializeObject(response);
+            JObject resultJson = (JObject) JsonConvert.DeserializeObject(response);
 
-            int code = (int)resultJson["code"];
-            if (code == 200)
+            int code = (int) resultJson["code"];
+            if (code == 100)
             {
                 return "登陆成功";
             }
@@ -119,7 +119,7 @@ namespace VerifyApi
             JObject resultJson = (JObject)JsonConvert.DeserializeObject(response);
 
             int code = (int)resultJson["code"];
-            if (code == 200)
+            if (code == 101)
             {
                 return "注册成功";
             }
@@ -163,7 +163,7 @@ namespace VerifyApi
             JObject resultJson = (JObject)JsonConvert.DeserializeObject(response);
 
             int code = (int)resultJson["code"];
-            if (code == 200)
+            if (code == 102)
             {
                 return "充值成功";
             }
@@ -204,7 +204,7 @@ namespace VerifyApi
             JObject resultJson = (JObject)JsonConvert.DeserializeObject(response);
 
             int code = (int)resultJson["code"];
-            if (code == 200)
+            if (code == 103)
             {
                 return "绑定机器成功";
             }
@@ -241,7 +241,7 @@ namespace VerifyApi
             JObject resultJson = (JObject)JsonConvert.DeserializeObject(response);
 
             int code = (int)resultJson["code"];
-            if (code == 200)
+            if (code == 105)
             {
                 return "修改密码成功";
             }
