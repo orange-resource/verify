@@ -4,7 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.orange.verify</groupId>
+    <parent>
+        <groupId>com.ongsat.verify</groupId>
+        <artifactId>verify-master</artifactId>
+        <version>0.0.1</version>
+    </parent>
+
     <artifactId>api</artifactId>
     <version>1.0.0</version>
 
@@ -12,6 +17,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+
+        <hutool-version>5.5.0</hutool-version>
     </properties>
 
     <dependencies>
@@ -20,6 +27,7 @@
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>3.0.6</version>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -27,12 +35,29 @@
             <artifactId>lombok</artifactId>
             <version>1.16.18</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>5.4.1.Final</version>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- 工具类 -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool-version}</version>
+            <optional>true</optional>
         </dependency>
 
     </dependencies>

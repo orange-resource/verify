@@ -4,20 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.orange.verify</groupId>
-    <artifactId>admin-web</artifactId>
-    <version>1.0.0</version>
-    <packaging>jar</packaging>
-
-    <name>admin-web</name>
-    <description>Demo project for Spring Boot</description>
-
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.6.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <groupId>com.ongsat.verify</groupId>
+        <artifactId>verify-master</artifactId>
+        <version>0.0.1</version>
     </parent>
+
+    <artifactId>admin-web</artifactId>
+    <version>0.0.1</version>
+    <name>admin-web</name>
+    <description>admin-web</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -39,19 +35,11 @@
         </dependency>
 
         <dependency>
-            <groupId>com.orange.verify</groupId>
+            <groupId>com.ongsat.verify</groupId>
             <artifactId>api</artifactId>
             <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
-
-        <dependency>
-            <groupId>com.orange.verify</groupId>
-            <artifactId>common</artifactId>
-            <version>1.0.0</version>
-            <scope>compile</scope>
-        </dependency>
-
 
         <dependency>
             <groupId>org.apache.shiro</groupId>
