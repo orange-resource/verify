@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class SoftGetSoftDescVO implements Serializable {
+public class SoftGetSoftDescParamVO implements Serializable {
 
     @NotBlank(message = "参数不合法")
     private String softId;

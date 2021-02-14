@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class AccountRegisterVO implements Serializable {
+public class AccountRegisterParamVO implements Serializable {
 
     @NotBlank(message = "参数不合法")
     @Size(min = 5,max = 10,message = "参数不合法")

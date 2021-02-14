@@ -4,13 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Getter
 @Setter
-public class CardTimeLimitVO implements Serializable {
+public class CardTimeLimitResultVO implements Serializable {
 
-    private Long startDate;
+    private Date startDate;
 
-    private Long endDate;
+    private Date endDate;
 
 }

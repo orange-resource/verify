@@ -7,11 +7,11 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class SoftVersionsVO implements Serializable {
+public class SoftVersionResultVO implements Serializable {
 
     private String notice;
 
-    private Integer novatioNecessaria;
+    private Integer forcedStatus;
 
     private String number;
 

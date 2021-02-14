@@ -1,15 +1,18 @@
 package com.orange.verify.adminweb.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.orange.verify.api.bean.BaiduMapApi;
+import com.orange.verify.api.entity.po.BaiduMapTokenPO;
+import com.orange.verify.api.entity.po.BaseTableName;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
-public interface BaiduMapApiMapper extends BaseMapper<BaiduMapApi> {
+@Repository
+public interface BaiduMapApiMapper extends BaseMapper<BaiduMapTokenPO>, BaseTableName {
 
-    @Select("select count(*) from t_baidu_map_api")
-    int getBaiduMapApiCount();
+    @Select("select count(*) from" + t_baidu_map_token_space)
+    int selectCount();
 
-    @Select("select * from t_baidu_map_api limit 1")
-    BaiduMapApi getSingle();
+    @Select("select * from" + t_baidu_map_token_space + "limit 1")
+    BaiduMapTokenPO selectSingle();
 
 }

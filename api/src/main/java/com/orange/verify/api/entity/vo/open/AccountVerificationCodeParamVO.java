@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class AccountVerificationCodeVO implements Serializable {
+public class AccountVerificationCodeParamVO implements Serializable {
 
     private String publicKey;
 

@@ -9,26 +9,21 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class AccountBindingCodeVO implements Serializable {
+public class AccountUpdatePasswordParamVO implements Serializable {
 
     @NotBlank(message = "参数不合法")
     @Size(min = 5,max = 10,message = "参数不合法")
     private String username;
 
     @NotBlank(message = "参数不合法")
+    @Size(min = 5,max = 10,message = "参数不合法")
     private String password;
 
     @NotBlank(message = "参数不合法")
+    @Size(min = 5,max = 10,message = "参数不合法")
+    private String securityCode;
+
+    @NotBlank(message = "参数不合法")
     private String softId;
-
-    /**
-     * 用户电脑的机器码
-     * code
-     */
-    @NotBlank(message = "参数不合法")
-    private String code;
-
-    @NotBlank(message = "参数不合法")
-    String publicKey;
 
 }

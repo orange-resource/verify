@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class AccountBindingCardVO implements Serializable {
+public class AccountLoginParamVO implements Serializable {
 
     @NotBlank(message = "参数不合法")
     @Size(min = 5,max = 10,message = "参数不合法")
@@ -22,12 +22,15 @@ public class AccountBindingCardVO implements Serializable {
     private String softId;
 
     @NotBlank(message = "参数不合法")
-    private String cardNumber;
+    String publicKey;
 
+    /**
+     * 用户电脑的机器码
+     * code
+     */
     @NotBlank(message = "参数不合法")
     private String code;
 
-    @NotBlank(message = "参数不合法")
-    String publicKey;
+    private String ip;
 
 }

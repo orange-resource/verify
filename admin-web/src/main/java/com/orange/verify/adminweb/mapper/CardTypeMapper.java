@@ -2,21 +2,26 @@ package com.orange.verify.adminweb.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.orange.verify.api.bean.CardType;
-import com.orange.verify.api.vo.CardTypeVo;
+import com.orange.verify.api.entity.po.BaseTableName;
+import com.orange.verify.api.entity.po.CardTypePO;
+import com.orange.verify.api.entity.vo.admin.CardTypePageResultVO;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface CardTypeMapper extends BaseMapper<CardType> {
+@Repository
+public interface CardTypeMapper extends BaseMapper<CardTypePO>, BaseTableName {
 
     @Select("<script>" +
-            "select ct.*,(select name from t_soft where id = ct.soft_id) as soft_name from t_card_type ct " +
-            "where ct.del_flag = 0 " +
-            "<if test=\"cardType.softId != null and cardType.softId != ''\"> and ct.soft_id = #{cardType.softId} </if>" +
+            "select ct.*, " +
+            "(select name from" + t_soft_space + "where id = ct.soft_id) as soft_name " +
+            "from" + t_card_type_space + "ct " +
+            "where 1=1 " +
+            "<if test=\"softId != null and softId != ''\"> and ct.soft_id = #{softId} </if>" +
             "order by ct.create_date desc" +
             "</script>")
-    List<CardTypeVo> page(@Param("cardType") CardType cardType, Page page);
+    List<CardTypePageResultVO> page(@Param("softId") String softId, Page page);
 
 }

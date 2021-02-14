@@ -9,27 +9,18 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class AccountLoginVO implements Serializable {
+public class SoftLeaveMessageSubmitParamVO implements Serializable {
 
     @NotBlank(message = "参数不合法")
-    @Size(min = 5,max = 10,message = "参数不合法")
-    private String username;
+    @Size(min = 1,max = 255,message = "参数不合法")
+    private String content;
 
     @NotBlank(message = "参数不合法")
-    private String password;
+    @Size(min = 1,max = 10,message = "参数不合法")
+    private String qq;
 
     @NotBlank(message = "参数不合法")
     private String softId;
-
-    @NotBlank(message = "参数不合法")
-    String publicKey;
-
-    /**
-     * 用户电脑的机器码
-     * code
-     */
-    @NotBlank(message = "参数不合法")
-    private String code;
 
     private String ip;
 
