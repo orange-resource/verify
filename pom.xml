@@ -11,7 +11,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.ongsat.verify</groupId>
+    <groupId>com.orange.verify</groupId>
     <artifactId>verify-master</artifactId>
     <version>0.0.1</version>
 
@@ -20,6 +20,7 @@
     <modules>
         <module>api</module>
         <module>admin-web</module>
+        <module>builder</module>
     </modules>
 
     <properties>

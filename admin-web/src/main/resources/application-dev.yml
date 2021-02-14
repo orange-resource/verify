@@ -1,0 +1,37 @@
+
+logging:
+  config: classpath:logback-dev.xml
+
+spring:
+  redis:
+    database: 0
+    expire: 1800
+    host: 127.0.0.1
+    password: ''
+    pool:
+      max:
+        active: 8
+        idle: 8
+        wait: -1
+      min:
+        idle: 0
+    port: 6379
+    timeout: 5000
+  datasource:
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    hikari:
+      connection-init-sql: SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci
+      connection-test-query: SELECT 1
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1765000
+      maximum-pool-size: 15
+      minimum-idle: 10
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:p6spy:mysql://localhost:3306/com_orange_verify_db?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: root
+
+app:
+  interface-log: true
+  version: 0.0.1
