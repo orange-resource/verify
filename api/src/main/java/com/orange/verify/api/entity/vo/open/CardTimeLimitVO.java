@@ -1,11 +1,13 @@
 package com.orange.verify.api.entity.vo.open;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
-@Data
-public class CardTimeLimitVo implements Serializable {
+@Getter
+@Setter
+public class CardTimeLimitVO implements Serializable {
 
     private Long startDate;
 

@@ -1,14 +1,16 @@
 package com.orange.verify.api.entity.vo.open;
 
-import lombok.Data;
-import org.hibernate.validator.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
-@Data
-public class SoftGetSoftDescVo implements Serializable {
+@Getter
+@Setter
+public class SoftGetSoftDescVO implements Serializable {
 
-    @NotBlank(message = "软件id不能为空")
+    @NotBlank(message = "参数不合法")
     private String softId;
 
     /**
