@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BaiduMapApiMapper extends BaseMapper<BaiduMapTokenPO>, BaseTableName {
+public interface BaiduMapTokenMapper extends BaseMapper<BaiduMapTokenPO>, BaseTableName {
 
     @Select("select count(*) from" + t_baidu_map_token_space)
     int selectCount();

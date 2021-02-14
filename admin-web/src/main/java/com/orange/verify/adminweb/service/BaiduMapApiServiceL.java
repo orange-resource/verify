@@ -1,8 +1,8 @@
 package com.orange.verify.adminweb.service;
 
-import com.orange.verify.admin.mapper.BaiduMapApiMapper;
-import com.orange.verify.api.bean.BaiduMapApi;
-import com.orange.verify.common.ip.BaiduIp;
+import com.orange.verify.adminweb.common.util.BaiduIpUtil;
+import com.orange.verify.adminweb.mapper.BaiduMapTokenMapper;
+import com.orange.verify.api.entity.po.BaiduMapTokenPO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class BaiduMapApiServiceL {
 
     @Autowired
-    private BaiduMapApiMapper apiMapper;
+    private BaiduMapTokenMapper baiduMapTokenMapper;
 
     public String getIpInfo(String ip) throws Exception {
 
@@ -20,9 +20,9 @@ public class BaiduMapApiServiceL {
 
         try {
 
-            BaiduMapApi single = apiMapper.getSingle();
+            BaiduMapTokenPO baiduMapTokenPO = baiduMapTokenMapper.selectSingle();
 
-            String ipInfo = BaiduIp.start(single.getAppkey())
+            String ipInfo = BaiduIpUtil.start(baiduMapTokenPO.getAppkey())
                     .getAddressByIp(ip);
 
             return ipInfo;
