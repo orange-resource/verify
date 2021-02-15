@@ -45,4 +45,7 @@ public interface CardMapper extends BaseMapper<CardPO>, BaseTableName {
                                               @Param("password") String password,
                                               @Param("softId") String softId);
 
+    @Select("select * from" + t_card_space + "where number = #{number}")
+    CardPO selectByNumber(@Param("number") String number);
+
 }

@@ -1,4 +1,4 @@
-package com.orange.verify.adminweb.controller;
+package com.orange.verify.adminweb.controller.admin;
 
 import com.orange.verify.adminweb.annotation.ParameterError;
 import org.springframework.stereotype.Controller;

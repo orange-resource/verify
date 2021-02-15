@@ -14,6 +14,20 @@ import java.util.List;
 @Repository
 public interface SoftAccountMapper extends BaseMapper<SoftAccountPO>, BaseTableName {
 
+    @Select("select count(*) from" + t_soft_account_space + "where username = #{username}")
+    int selectCountByUsername(@Param("username") String username);
+
+    @Select("select count(*) from" + t_soft_account_space + "where username = #{username} and soft_id = #{softId}")
+    int selectCountByUsernameAndSoftId(@Param("username") String username, @Param("softId") String softId);
+
+    @Select("select * from" + t_soft_account_space + "where username = #{username} and soft_id = #{softId} and password = #{password}")
+    SoftAccountPO selectByUsernameAndSoftIdAndPassword(@Param("username") String username,
+                                                       @Param("softId") String softId,
+                                                       @Param("password") String password);
+
+    @Select("select * from" + t_soft_account_space + "where username = #{username} and soft_id = #{softId} and security_code = #{securityCode}")
+    SoftAccountPO selectByUsernameAndSecurityCode(@Param("username") String username, @Param("securityCode") String securityCode);
+
     @Select("<script>" +
             "SELECT a.*,s.name as soft_name FROM" + t_soft_account_space + "a " +
             "LEFT JOIN" + t_soft_space + "s " +
