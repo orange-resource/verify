@@ -14,4 +14,6 @@ public class RedisKeyConstant {
      */
     public final static String IP_LIBRARY = BASE + "ip-library:";
 
+    public final static String USER_TOKEN = BASE + "user-token:";
+
 }

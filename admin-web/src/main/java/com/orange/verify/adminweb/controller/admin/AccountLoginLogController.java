@@ -1,49 +1,34 @@
 package com.orange.verify.adminweb.controller.admin;
 
-import com.alibaba.dubbo.config.annotation.Reference;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.orange.verify.adminweb.annotation.RspHandle;
-import com.orange.verify.adminweb.model.Response;
-import com.orange.verify.adminweb.model.ResponseCode;
-import com.orange.verify.api.service.AccountLoginLogService;
-import com.orange.verify.api.vo.AccountLoginLogVo;
-import org.apache.shiro.authz.annotation.RequiresUser;
+import com.orange.verify.adminweb.config.annotation.ApiAuth;
+import com.orange.verify.adminweb.service.AccountLoginLogService;
+import com.orange.verify.api.common.constant.ApiAuthConstant;
+import com.orange.verify.api.common.response.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
-
-/**
- * 客户登陆日志
- */
 @Controller
-@RequestMapping(value = "accountLoginLog")
-public class AccountLoginLogController extends BaseController {
+@RequestMapping(value = "/admin/accountLoginLog", produces = "application/json")
+public class AccountLoginLogController {
 
-    @Reference
+    @Autowired
     private AccountLoginLogService accountLoginLogService;
 
-    @RspHandle
-    @RequiresUser
-    @RequestMapping(value = "getBeforeData",method = RequestMethod.GET)
+    @ApiAuth(type = ApiAuthConstant.ADMIN_PLATFORM)
+    @PostMapping(value = "/getBeforeData")
     @ResponseBody
     public Response getBeforeData(String softId) {
-
-        List<String> beforeData = accountLoginLogService.getBeforeData(softId);
-        return Response.build(ResponseCode.QUERY_SUCCESS,beforeData);
+        return accountLoginLogService.getBeforeData(softId);
     }
 
-    @RspHandle
-    @RequiresUser
-    @RequestMapping(value = "page",method = RequestMethod.GET)
+    @ApiAuth(type = ApiAuthConstant.ADMIN_PLATFORM)
+    @PostMapping(value = "/page")
     @ResponseBody
-    public Response page(AccountLoginLogVo accountLoginLog, Page page) {
-
-        Page<AccountLoginLogVo> accountLoginLogVoPage = accountLoginLogService.page(accountLoginLog, page);
-
-        return Response.build(ResponseCode.QUERY_SUCCESS,accountLoginLogVoPage);
+    public Response page(String softId, Integer offset, Integer limit) {
+        return accountLoginLogService.page(softId, offset, limit);
     }
 
 }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 @Controller(value = "SoftAccountControllerAdmin")
 @RequestMapping(value = "/admin/account", produces = "application/json")
-public class SoftAccountController extends BaseController {
+public class SoftAccountController {
 
     @Autowired
     private SoftAccountService softAccountService;

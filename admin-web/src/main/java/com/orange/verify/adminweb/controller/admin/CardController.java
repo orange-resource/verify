@@ -1,155 +1,77 @@
 package com.orange.verify.adminweb.controller.admin;
 
-import cn.hutool.core.util.StrUtil;
-import com.alibaba.dubbo.config.annotation.Reference;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.orange.verify.adminweb.annotation.Open;
-import com.orange.verify.adminweb.annotation.RspHandle;
-import com.orange.verify.adminweb.model.Response;
-import com.orange.verify.adminweb.model.ResponseCode;
-import com.orange.verify.api.bean.Card;
-import com.orange.verify.api.service.CardService;
-import com.orange.verify.api.vo.CardVo;
-import com.orange.verify.api.vo.open.CardTimeLimitVo;
-import org.apache.shiro.authz.annotation.RequiresUser;
+import com.orange.verify.adminweb.config.annotation.ApiAuth;
+import com.orange.verify.adminweb.service.CardService;
+import com.orange.verify.api.common.constant.ApiAuthConstant;
+import com.orange.verify.api.common.response.Response;
+import com.orange.verify.api.entity.vo.admin.CardPageParamVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * 卡密
- */
-@Controller
-@RequestMapping(value = "card")
+@Controller(value = "CardControllerAdmin")
+@RequestMapping(value = "/admin/card", produces = "application/json")
 public class CardController {
 
-    @Reference
+    @Autowired
     private CardService cardService;
 
-    @RspHandle
-    @RequiresUser
-    @RequestMapping(value = "page",method = RequestMethod.GET)
+    @ApiAuth(type = ApiAuthConstant.ADMIN_PLATFORM)
+    @PostMapping(value = "/page")
     @ResponseBody
-    public Response page(CardVo cardVo, Page page) {
-
-        Page<CardVo> cardVoPage = cardService.page(cardVo,page);
-        return Response.build(ResponseCode.QUERY_SUCCESS,cardVoPage);
+    public Response page(CardPageParamVO cardPageParamVO) {
+        return cardService.page(cardPageParamVO);
     }
 
-    @RspHandle
-    @RequiresUser
-    @RequestMapping(value = "count",method = RequestMethod.GET)
+    @ApiAuth(type = ApiAuthConstant.ADMIN_PLATFORM)
+    @PostMapping(value = "/count")
     @ResponseBody
-    public Response count() {
-
-        int count = cardService.count();
-        return Response.build(ResponseCode.QUERY_SUCCESS,count);
+    public Response getCount() {
+        return cardService.getCount();
     }
 
-    @RspHandle
-    @RequiresUser
-    @RequestMapping(value = "create",method = RequestMethod.POST)
+    @ApiAuth(type = ApiAuthConstant.ADMIN_PLATFORM)
+    @PostMapping(value = "/create")
     @ResponseBody
-    public Response create(Card card,Integer count) {
-
-        if (count > 100) {
-            return Response.build(ResponseCode.PRODUCTION_TOO_MUCH);
-        }
-
-        cardService.saveLogic(card,count);
-
-        return Response.success();
+    public Response create(String cardTypeId, Integer count) {
+        return cardService.batchCreate(cardTypeId, count);
     }
 
-    @RspHandle
-    @RequiresUser
-    @RequestMapping(value = "closure",method = RequestMethod.POST)
+    @ApiAuth(type = ApiAuthConstant.ADMIN_PLATFORM)
+    @PostMapping(value = "/close")
     @ResponseBody
-    public Response closure(String cardId,Integer closure) {
-
-        Card card = new Card();
-        card.setId(cardId);
-        card.setClosure(closure);
-        boolean b = cardService.updateById(card);
-
-        if (b == true) {
-            return Response.success();
-        }
-        return Response.error();
+    public Response close(String cardId, Integer closeStatus) {
+        return cardService.close(cardId, closeStatus);
     }
 
-    @RspHandle
-    @RequiresUser
-    @RequestMapping(value = "sellStatus",method = RequestMethod.POST)
+    @ApiAuth(type = ApiAuthConstant.ADMIN_PLATFORM)
+    @PostMapping(value = "/sell")
     @ResponseBody
-    public Response sellStatus(String cardId,Integer sellStatus) {
-
-        Card card = new Card();
-        card.setId(cardId);
-        card.setSellStatus(sellStatus);
-        boolean b = cardService.updateById(card);
-
-        if (b == true) {
-            return Response.success();
-        }
-        return Response.error();
+    public Response sell(String cardId, Integer sellStatus) {
+        return cardService.sell(cardId, sellStatus);
     }
 
-    @RspHandle
-    @RequiresUser
-    @RequestMapping(value = "sell",method = RequestMethod.POST)
+    @ApiAuth(type = ApiAuthConstant.ADMIN_PLATFORM)
+    @PostMapping(value = "/batchSell")
     @ResponseBody
-    public Response sell(@RequestBody List<String> sell) {
-
-        cardService.sell(sell);
-
-        return Response.success();
+    public Response batchSell(@RequestBody List<String> cardIdList) {
+        return cardService.batchSell(cardIdList);
     }
 
-    @RspHandle
-    @RequiresUser
-    @RequestMapping(value = "batchRemove",method = RequestMethod.POST)
+    @ApiAuth(type = ApiAuthConstant.ADMIN_PLATFORM)
+    @PostMapping(value = "/batchDelete")
     @ResponseBody
-    public Response batchRemove(@RequestBody List<String> cardList) {
-
-        cardService.batchRemove(cardList);
-
-        return Response.success();
+    public Response batchDelete(@RequestBody List<String> cardIdList) {
+        return cardService.batchDelete(cardIdList);
     }
 
-    @RspHandle
-    @RequiresUser
-    @RequestMapping(value = "remove",method = RequestMethod.POST)
+    @ApiAuth(type = ApiAuthConstant.ADMIN_PLATFORM)
+    @PostMapping(value = "/delete")
     @ResponseBody
-    public Response remove(String cardId) {
-
-        boolean b = cardService.removeById(cardId);
-        if (b == true) {
-            return Response.success();
-        }
-        return Response.error();
-    }
-
-    @Open(explain = "用户-查看卡密什么时候开始用的，什么时候结束的")
-    @RspHandle
-    @RequestMapping(value = "getCardTimeLimit",method = RequestMethod.POST)
-    @ResponseBody
-    public Response getCardTimeLimit(String username,String password,String softId) {
-
-        if (StrUtil.hasEmpty(username,password,softId)) {
-            return Response.build(ResponseCode.PARAMETER_ERROR);
-        }
-
-        CardTimeLimitVo cardTimeLimit = cardService.getCardTimeLimit(username, password, softId);
-        if (cardTimeLimit == null) {
-            return Response.build(ResponseCode.CARD_EMPTY);
-        }
-
-        return Response.build(ResponseCode.QUERY_SUCCESS,cardTimeLimit);
+    public Response delete(String cardId) {
+        return cardService.delete(cardId);
     }
 
 }

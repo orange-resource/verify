@@ -1,141 +1,63 @@
 package com.orange.verify.adminweb.controller.admin;
 
-import com.alibaba.dubbo.config.annotation.Reference;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.orange.verify.adminweb.annotation.Open;
-import com.orange.verify.adminweb.annotation.ParameterError;
-import com.orange.verify.adminweb.annotation.RspHandle;
-import com.orange.verify.adminweb.model.Response;
-import com.orange.verify.adminweb.model.ResponseCode;
-import com.orange.verify.api.bean.Soft;
-import com.orange.verify.api.service.SoftService;
-import com.orange.verify.api.sr.ServiceResult;
-import com.orange.verify.api.sr.SoftImplGetSoftDescEnum;
-import com.orange.verify.api.vo.SoftVo;
-import com.orange.verify.api.vo.open.SoftGetSoftDescVo;
-import org.apache.shiro.authz.annotation.RequiresUser;
+import com.orange.verify.adminweb.config.annotation.ApiAuth;
+import com.orange.verify.adminweb.service.SoftService;
+import com.orange.verify.api.common.constant.ApiAuthConstant;
+import com.orange.verify.api.common.response.Response;
+import com.orange.verify.api.entity.po.SoftPO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
+@Controller(value = "SoftControllerAdmin")
+@RequestMapping(value = "/admin/soft", produces = "application/json")
+public class SoftController {
 
-/**
- * 软件
- */
-@Controller
-@RequestMapping(value = "soft")
-public class SoftController extends BaseController {
-
-    @Reference
+    @Autowired
     private SoftService softService;
 
-    @RspHandle
-    @RequiresUser
-    @RequestMapping(value = "page",method = RequestMethod.GET)
+    @ApiAuth(type = ApiAuthConstant.ADMIN_PLATFORM)
+    @PostMapping(value = "/page")
     @ResponseBody
-    public Response page(Soft soft, Page page) {
-
-        Page<SoftVo> softVoPage = softService.page(soft,page);
-        return Response.build(ResponseCode.QUERY_SUCCESS,softVoPage);
+    public Response page(String softName, Integer offset, Integer limit) {
+        return softService.page(softName, offset, limit);
     }
 
-    @RspHandle
-    @RequiresUser
-    @RequestMapping(value = "count",method = RequestMethod.GET)
+    @ApiAuth(type = ApiAuthConstant.ADMIN_PLATFORM)
+    @PostMapping(value = "/count")
     @ResponseBody
-    public Response count() {
-
-        int count = softService.count();
-        return Response.build(ResponseCode.QUERY_SUCCESS,count);
+    public Response getCount() {
+        return softService.getCount();
     }
 
-    @RspHandle
-    @RequiresUser
-    @RequestMapping(value = "list",method = RequestMethod.GET)
+    @ApiAuth(type = ApiAuthConstant.ADMIN_PLATFORM)
+    @PostMapping(value = "/getDetail")
     @ResponseBody
-    public Response list() {
-
-        List<Soft> list = softService.list();
-        return Response.build(ResponseCode.QUERY_SUCCESS,list);
+    public Response getDetail(String id) {
+        return softService.getDetail(id);
     }
 
-    @RspHandle
-    @RequiresUser
-    @RequestMapping(value = "single",method = RequestMethod.GET)
+    @ApiAuth(type = ApiAuthConstant.ADMIN_PLATFORM)
+    @PostMapping(value = "/create")
     @ResponseBody
-    public Response single(String softId) {
-
-        Soft soft = softService.getById(softId);
-        return Response.build(ResponseCode.QUERY_SUCCESS,soft);
+    public Response create(SoftPO softPO) {
+        return softService.create(softPO);
     }
 
-    @RspHandle
-    @RequiresUser
-    @RequestMapping(value = "create",method = RequestMethod.POST)
+    @ApiAuth(type = ApiAuthConstant.ADMIN_PLATFORM)
+    @PostMapping(value = "/update")
     @ResponseBody
-    public Response create(Soft soft) {
-
-        boolean b = softService.save(soft);
-        if (b == true) {
-            return Response.success();
-        }
-        return Response.error();
+    public Response update(SoftPO softPO) {
+        return softService.update(softPO);
     }
 
-    @RspHandle
-    @RequiresUser
-    @RequestMapping(value = "update",method = RequestMethod.POST)
+    @ApiAuth(type = ApiAuthConstant.ADMIN_PLATFORM)
+    @PostMapping(value = "/delete")
     @ResponseBody
-    public Response update(Soft soft) {
-
-        boolean b = softService.updateById(soft);
-        if (b == true) {
-            return Response.success();
-        }
-        return Response.error();
+    public Response delete(String id) {
+        return softService.delete(id);
     }
-
-    @RspHandle
-    @RequiresUser
-    @RequestMapping(value = "remove",method = RequestMethod.POST)
-    @ResponseBody
-    public Response remove(String softId) {
-
-        boolean b = softService.removeById(softId);
-        if (b == true) {
-            return Response.success();
-        }
-        return Response.error();
-    }
-
-    @Open(explain = "获取软件信息")
-    @RspHandle
-    @RequestMapping(value = "getSoftDesc",method = RequestMethod.POST)
-    @ResponseBody
-    public Response getSoftDesc(@Validated SoftGetSoftDescVo accountGetSoftDescVo, BindingResult result)
-            throws ParameterError {
-
-        super.parametric(result);
-
-        ServiceResult<SoftGetSoftDescVo> getSoftDesc = softService.getSoftDesc(accountGetSoftDescVo);
-        switch (getSoftDesc.getCode()) {
-            case SoftImplGetSoftDescEnum.SUCCESS:
-                return Response.build(ResponseCode.QUERY_SUCCESS, getSoftDesc.getData());
-
-            case SoftImplGetSoftDescEnum.SOFT_CLOSE:
-                return Response.build(ResponseCode.SOFT_CLOSE, getSoftDesc.getData());
-
-            case SoftImplGetSoftDescEnum.SOFT_EMPTY:
-                return Response.build(ResponseCode.SOFT_EMPTY);
-                
-            default:
-                return Response.build(ResponseCode.UNKNOWN_ERROR);
-        }
-    }
-
 
 }

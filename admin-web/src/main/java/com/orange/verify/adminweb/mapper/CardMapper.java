@@ -48,4 +48,7 @@ public interface CardMapper extends BaseMapper<CardPO>, BaseTableName {
     @Select("select * from" + t_card_space + "where number = #{number}")
     CardPO selectByNumber(@Param("number") String number);
 
+    @Select("select count(*) from" + t_card_space)
+    int selectCount();
+
 }

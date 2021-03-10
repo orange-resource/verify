@@ -1,70 +1,39 @@
 package com.orange.verify.adminweb.controller.admin;
 
-import com.alibaba.dubbo.config.annotation.Reference;
-import com.orange.verify.adminweb.annotation.RspHandle;
-import com.orange.verify.adminweb.model.Response;
-import com.orange.verify.adminweb.model.ResponseCode;
-import com.orange.verify.api.bean.BaiduMapApi;
-import com.orange.verify.api.service.BaiduMapApiService;
-import org.apache.shiro.authz.annotation.RequiresUser;
+import com.orange.verify.adminweb.config.annotation.ApiAuth;
+import com.orange.verify.adminweb.service.BaiduMapService;
+import com.orange.verify.api.common.constant.ApiAuthConstant;
+import com.orange.verify.api.common.response.Response;
+import com.orange.verify.api.entity.po.BaiduMapTokenPO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
 
 /**
  * 百度 地理 配置
  */
 @Controller
-@RequestMapping(value = "baiduMapApi")
+@RequestMapping(value = "/admin/baiduMapToken", produces = "application/json")
 public class BaiduMapApiController {
 
-    @Reference
-    private BaiduMapApiService baiduMapApiService;
+    @Autowired
+    private BaiduMapService baiduMapService;
 
-    @RspHandle
-    @RequiresUser
-    @RequestMapping(value = "single",method = RequestMethod.GET)
+    @ApiAuth(type = ApiAuthConstant.ADMIN_PLATFORM)
+    @PostMapping(value = "/getConfig")
     @ResponseBody
-    public Response single() {
-
-        List<BaiduMapApi> list = baiduMapApiService.list();
-        if (list == null || list.size() == 0) {
-            return Response.build(ResponseCode.EMPTY);
-        }
-
-        return Response.build(ResponseCode.QUERY_SUCCESS,list.get(0));
+    public Response getConfig() {
+        return baiduMapService.getConfig();
     }
 
-    @RspHandle
-    @RequiresUser
-    @RequestMapping(value = "create",method = RequestMethod.POST)
+    @ApiAuth(type = ApiAuthConstant.ADMIN_PLATFORM)
+    @PostMapping(value = "save")
     @ResponseBody
-    public Response create(BaiduMapApi baiduMapApi) {
-
-        boolean b = baiduMapApiService.create(baiduMapApi);
-        if (b == true) {
-            return Response.success();
-        }
-        return Response.error();
+    public Response save(BaiduMapTokenPO baiduMapTokenPO) {
+        return baiduMapService.save(baiduMapTokenPO);
     }
-
-    @RspHandle
-    @RequiresUser
-    @RequestMapping(value = "update",method = RequestMethod.POST)
-    @ResponseBody
-    public Response update(BaiduMapApi baiduMapApi) {
-
-        boolean b = baiduMapApiService.updateById(baiduMapApi);
-        if (b == true) {
-            return Response.success();
-        }
-        return Response.error();
-    }
-
-
 
 }
 

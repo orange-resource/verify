@@ -25,6 +25,6 @@ public interface SoftMapper extends BaseMapper<SoftPO>, BaseTableName {
             "<if test=\"softName != null and softName != ''\"> and s.name like concat('%',#{softName},'%') </if>" +
             "order by s.create_date desc" +
             "</script>")
-    List<SoftPageResultVO> page(@Param("softName") String softName, Page page);
+    List<SoftPageResultVO> selectListByPage(@Param("softName") String softName, Page page);
 
 }

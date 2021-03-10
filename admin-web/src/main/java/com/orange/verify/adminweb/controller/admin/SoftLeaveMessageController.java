@@ -1,93 +1,37 @@
 package com.orange.verify.adminweb.controller.admin;
 
-import com.alibaba.dubbo.config.annotation.Reference;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.orange.verify.adminweb.annotation.Open;
-import com.orange.verify.adminweb.annotation.ParameterError;
-import com.orange.verify.adminweb.annotation.RspHandle;
-import com.orange.verify.adminweb.model.Response;
-import com.orange.verify.adminweb.model.ResponseCode;
-import com.orange.verify.api.service.SoftLeaveMessageService;
-import com.orange.verify.api.sr.ServiceResult;
-import com.orange.verify.api.sr.SoftLeaveMessageImplCreateEnum;
-import com.orange.verify.api.vo.SoftLeaveMessageVo;
-import com.orange.verify.api.vo.open.SoftLeaveMeesageSubmitVo;
-import com.orange.verify.common.ip.IpUtil;
-import org.apache.shiro.authz.annotation.RequiresUser;
+import com.orange.verify.adminweb.config.annotation.ApiAuth;
+import com.orange.verify.adminweb.service.SoftLeaveMessageService;
+import com.orange.verify.api.common.constant.ApiAuthConstant;
+import com.orange.verify.api.common.response.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * 软件留言
  */
-@Controller
-@RequestMapping(value = "softLeaveMessage")
-public class SoftLeaveMessageController extends BaseController {
+@Controller(value = "SoftLeaveMessageControllerAdmin")
+@RequestMapping(value = "/admin/softLeaveMessage")
+public class SoftLeaveMessageController {
 
-    @Reference
+    @Autowired
     private SoftLeaveMessageService softLeaveMessageService;
 
-    @RspHandle
-    @RequiresUser
-    @RequestMapping(value = "page",method = RequestMethod.GET)
+    @ApiAuth(type = ApiAuthConstant.ADMIN_PLATFORM)
+    @PostMapping(value = "/page")
     @ResponseBody
-    public Response page(SoftLeaveMessageVo softLeaveMessageVo, Page page) {
-
-        Page<SoftLeaveMessageVo> softLeaveMessagePage = softLeaveMessageService.page(softLeaveMessageVo, page);
-
-        return Response.build(ResponseCode.QUERY_SUCCESS,softLeaveMessagePage);
+    public Response page(String softId, Integer offset, Integer limit) {
+        return softLeaveMessageService.page(softId, offset, limit);
     }
 
-    @RspHandle
-    @RequiresUser
-    @RequestMapping(value = "remove",method = RequestMethod.POST)
+    @ApiAuth(type = ApiAuthConstant.ADMIN_PLATFORM)
+    @PostMapping(value = "/delete")
     @ResponseBody
-    public Response remove(String softLeaveMessageId) {
-
-        boolean b = softLeaveMessageService.removeById(softLeaveMessageId);
-        if (b == true) {
-            return Response.success();
-        }
-        return Response.error();
-    }
-
-    @Open(explain = "用户提交留言反馈")
-    @RspHandle
-    @RequestMapping(value = "create",method = RequestMethod.POST)
-    @ResponseBody
-    public Response create(@Validated SoftLeaveMeesageSubmitVo softLeaveMeesageSubmitVo, BindingResult result,
-                           HttpServletRequest request) throws ParameterError {
-
-        super.parametric(result);
-
-        softLeaveMeesageSubmitVo.setIp(IpUtil.getIp(request));
-
-        ServiceResult serviceResult = softLeaveMessageService.create(softLeaveMeesageSubmitVo);
-        switch (serviceResult.getCode()) {
-            case SoftLeaveMessageImplCreateEnum.LEAVE_MESSAGE_SEND_SUCCESS:
-                return Response.build(ResponseCode.LEAVE_MESSAGE_SEND_SUCCESS);
-
-            case SoftLeaveMessageImplCreateEnum.SOFT_EMPTY:
-                return Response.build(ResponseCode.SOFT_EMPTY);
-
-            case SoftLeaveMessageImplCreateEnum.SOFT_CLOSE:
-                return Response.build(ResponseCode.SOFT_CLOSE);
-
-            case SoftLeaveMessageImplCreateEnum.BAIDU_API_ERROR:
-                return Response.build(ResponseCode.BAIDU_API_ERROR);
-
-            case SoftLeaveMessageImplCreateEnum.LEAVE_MESSAGE_SEND_ERROR:
-                return Response.build(ResponseCode.LEAVE_MESSAGE_SEND_ERROR);
-
-            default:
-                return Response.build(ResponseCode.UNKNOWN_ERROR);
-        }
+    public Response delete(String id) {
+        return softLeaveMessageService.delete(id);
     }
 
 }

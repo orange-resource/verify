@@ -5,10 +5,13 @@ import cn.hutool.core.util.StrUtil;
 import com.orange.verify.adminweb.common.util.IpUtil;
 import com.orange.verify.adminweb.config.annotation.ApiAuth;
 import com.orange.verify.api.common.constant.ApiAuthConstant;
+import com.orange.verify.api.common.constant.RedisKeyConstant;
 import com.orange.verify.api.common.response.Response;
 import com.orange.verify.api.common.response.RspCode;
 import com.orange.verify.api.util.GsonUtil;
+import com.orange.verify.api.util.RedisTemplateUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -26,6 +29,9 @@ import java.io.PrintWriter;
 @Slf4j
 @Component
 public class ApiAuthInterceptor implements HandlerInterceptor {
+
+    @Autowired
+    private RedisTemplateUtil redisTemplateUtil;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -64,14 +70,14 @@ public class ApiAuthInterceptor implements HandlerInterceptor {
             // 验证所属平台
             // 管理平台端接口验证拦截
             if (apiAuth.type().equals(ApiAuthConstant.ADMIN_PLATFORM)) {
-                return managementPlatformIntercept(request, response, apiAuth);
+                return adminPlatformIntercept(request, response, apiAuth);
             }
         }
 
         return true;
     }
 
-    private boolean managementPlatformIntercept(HttpServletRequest request, HttpServletResponse response, ApiAuth apiAuth) {
+    private boolean adminPlatformIntercept(HttpServletRequest request, HttpServletResponse response, ApiAuth apiAuth) {
         String authorization = request.getHeader(ApiAuthConstant.HEADER_AUTHORIZATION);
         if (StrUtil.isBlank(authorization)) {
             toJson(response, Response.build(RspCode.VERIFICATION_FAILED));
@@ -79,6 +85,11 @@ public class ApiAuthInterceptor implements HandlerInterceptor {
         }
 
         // 验证
+        Boolean hasKey = redisTemplateUtil.hasKey(RedisKeyConstant.USER_TOKEN + authorization);
+        if (null == hasKey || !hasKey) {
+            toJson(response, Response.build(RspCode.LOGIN_EXPIRED));
+            return false;
+        }
 
         return true;
     }

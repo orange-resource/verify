@@ -8,7 +8,12 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface DDTokenMapper extends BaseMapper<DDTokenPO>, BaseTableName {
+
+    @Select("select * from" + t_dingding_token_space + "order by create_at desc")
+    List<DDTokenPO> selectListBySort();
 
 }

@@ -17,4 +17,8 @@ public class CardPageParamVO implements Serializable {
 
     private Integer useStatus;
 
+    private Integer offset;
+
+    private Integer limit;
+
 }

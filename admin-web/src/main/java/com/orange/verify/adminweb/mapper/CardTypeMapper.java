@@ -22,6 +22,6 @@ public interface CardTypeMapper extends BaseMapper<CardTypePO>, BaseTableName {
             "<if test=\"softId != null and softId != ''\"> and ct.soft_id = #{softId} </if>" +
             "order by ct.create_date desc" +
             "</script>")
-    List<CardTypePageResultVO> page(@Param("softId") String softId, Page page);
+    List<CardTypePageResultVO> selectByPage(@Param("softId") String softId, Page page);
 
 }

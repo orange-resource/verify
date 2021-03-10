@@ -23,7 +23,7 @@ import java.io.IOException;
 
 @Validated
 @Controller(value = "SoftAccountControllerOpen")
-@RequestMapping(value = "/api/account")
+@RequestMapping(value = "/open/account")
 public class SoftAccountController {
 
     @Autowired
