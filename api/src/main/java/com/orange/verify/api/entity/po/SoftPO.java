@@ -60,9 +60,9 @@ public class SoftPO implements Serializable {
 
     /**
      * 关闭注册后的返回信息
-     * registe_close_msg
+     * register_close_msg
      */
-    private String registeCloseMsg;
+    private String registerCloseMsg;
 
     /**
      * 应用关闭状态下的返回信息
@@ -142,12 +142,12 @@ public class SoftPO implements Serializable {
         this.notice = notice;
     }
 
-    public String getRegisteCloseMsg() {
-        return registeCloseMsg;
+    public String getRegisterCloseMsg() {
+        return registerCloseMsg;
     }
 
-    public void setRegisteCloseMsg(String registeCloseMsg) {
-        this.registeCloseMsg = registeCloseMsg;
+    public void setRegisterCloseMsg(String registerCloseMsg) {
+        this.registerCloseMsg = registerCloseMsg;
     }
 
     public String getAppCloseMsg() {

@@ -20,7 +20,7 @@ public interface SoftLeaveMessageMapper extends BaseMapper<SoftLeaveMessagePO>, 
             "on slm.soft_id = s.id " +
             "where 1=1 " +
             "<if test=\"softId != null and softId != ''\"> and slm.soft_id = #{softId} </if>" +
-            "order by slm.create_date desc" +
+            "order by slm.create_at desc" +
             "</script>")
     List<SoftLeaveMessagePageResultVO> selectListByPage(@Param("softId") String softId, Page page);
 

@@ -121,7 +121,7 @@ public class SoftAccountService extends ServiceImpl<SoftAccountMapper, SoftAccou
         } else if (softPO.getServiceStatus().equals(SoftServiceStatusConstant.CLOSE.getType())) {
             return Response.build(RspCode.SOFT_CLOSE_WARN, softPO.getAppCloseMsg());
         } else if (softPO.getRegisterStatus().equals(SoftRegisterStatusConstant.CLOSE.getType())) {
-            return Response.build(RspCode.REGISTER_CLOSE_WARN, softPO.getRegisteCloseMsg());
+            return Response.build(RspCode.REGISTER_CLOSE_WARN, softPO.getRegisterCloseMsg());
         }
 
         // 进行解密 -> password 和 code -> 解密成真实文本

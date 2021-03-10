@@ -20,7 +20,7 @@ public interface CardTypeMapper extends BaseMapper<CardTypePO>, BaseTableName {
             "from" + t_card_type_space + "ct " +
             "where 1=1 " +
             "<if test=\"softId != null and softId != ''\"> and ct.soft_id = #{softId} </if>" +
-            "order by ct.create_date desc" +
+            "order by ct.create_at desc" +
             "</script>")
     List<CardTypePageResultVO> selectByPage(@Param("softId") String softId, Page page);
 

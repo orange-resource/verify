@@ -23,7 +23,7 @@ public interface SoftMapper extends BaseMapper<SoftPO>, BaseTableName {
             "FROM" + t_soft_space + "s " +
             "where 1=1 " +
             "<if test=\"softName != null and softName != ''\"> and s.name like concat('%',#{softName},'%') </if>" +
-            "order by s.create_date desc" +
+            "order by s.create_at desc" +
             "</script>")
     List<SoftPageResultVO> selectListByPage(@Param("softName") String softName, Page page);
 

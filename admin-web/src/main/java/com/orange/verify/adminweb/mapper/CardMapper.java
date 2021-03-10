@@ -33,7 +33,7 @@ public interface CardMapper extends BaseMapper<CardPO>, BaseTableName {
             "<if test=\"cardVo.cardTypeUnit != null\"> and ct.unit_type = #{cardVo.cardTypeUnit} </if>" +
             "<if test=\"cardVo.closeStatus != null\"> and c.close_status = #{cardVo.closeStatus} </if>" +
             "<if test=\"cardVo.useStatus != null\"> and c.use_status = #{cardVo.useStatus} </if>" +
-            "order by c.create_date desc" +
+            "order by c.create_at desc" +
             "</script>")
     List<CardPageResultVO> page(@Param("cardVo") CardPageParamVO cardPageParamVO, Page page);
 

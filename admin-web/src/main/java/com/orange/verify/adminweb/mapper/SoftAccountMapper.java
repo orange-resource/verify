@@ -36,7 +36,7 @@ public interface SoftAccountMapper extends BaseMapper<SoftAccountPO>, BaseTableN
             "<if test=\"softId != null and softId != ''\"> and a.soft_id = #{softId} </if>" +
             "<if test=\"createIp != null and createIp != ''\"> and a.create_ip = #{createIp} </if>" +
             "<if test=\"username != null and username != ''\"> and a.username like concat('%',#{username},'%') </if>" +
-            "order by create_date desc" +
+            "order by create_at desc" +
             "</script>")
     List<SoftAccountPageResultVO> page(@Param("softId") String softId,
                                        @Param("createIp") String createIp,

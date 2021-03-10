@@ -19,16 +19,16 @@ public interface AccountRegisterLogMapper extends BaseMapper<AccountRegisterLogP
     @Select("<script>" +
             "SELECT FROM_UNIXTIME(ROUND(create_date / 1000)) AS TIME FROM" + t_account_register_log_space +
             "WHERE " +
-            "<![CDATA[ TO_DAYS(NOW()) - TO_DAYS(FROM_UNIXTIME(create_date/1000)) >= 0 " +
+            "<![CDATA[ TO_DAYS(NOW()) - TO_DAYS(FROM_UNIXTIME(create_at/1000)) >= 0 " +
             "AND " +
-            "TO_DAYS(NOW()) - TO_DAYS(FROM_UNIXTIME(create_date/1000)) <= 7 ]]> " +
+            "TO_DAYS(NOW()) - TO_DAYS(FROM_UNIXTIME(create_at/1000)) <= 7 ]]> " +
             "<if test=\"softId != null and softId != ''\"> and soft_id = #{softId} </if>" +
-            "ORDER BY create_date ASC " +
+            "ORDER BY create_at ASC " +
             "</script>")
     List<String> selectBeforeData(@Param("softId") String softId);
 
     @Delete("delete from" + t_account_register_log_space +
-            "where TO_DAYS(NOW()) - TO_DAYS(FROM_UNIXTIME(create_date/1000)) >= 10\n" +
+            "where TO_DAYS(NOW()) - TO_DAYS(FROM_UNIXTIME(create_at/1000)) >= 10\n" +
             "limit 100")
     int deleteLog();
 
@@ -42,7 +42,7 @@ public interface AccountRegisterLogMapper extends BaseMapper<AccountRegisterLogP
             " and tall.soft_id = #{softId} " +
             "</if>" +
             "</where>" +
-            "ORDER BY create_date desc" +
+            "ORDER BY create_at desc" +
             "</script>")
     List<AccountRegisterLogPageResultVO> page(@Param("softId") String softId, Page page);
 

@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableScheduling
 @EnableTransactionManagement
 @ComponentScan("com.orange.verify")
-@MapperScan("com.orange.verify.mapper")
+@MapperScan("com.orange.verify.adminweb.mapper")
 public class AdminWebApplication {
 
     public static void main(String[] args) {
