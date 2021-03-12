@@ -71,13 +71,8 @@
             border
             style="width: 100%;margin-top: 10px">
             <el-table-column
-              prop="createDate"
+              prop="createAt"
               label="创建时间"
-              align="center"
-            />
-            <el-table-column
-              prop="updateDate"
-              label="更新时间"
               align="center"
             />
             <el-table-column
@@ -96,7 +91,9 @@
               label="状态"
             >
               <template slot-scope="scope">
-                <el-tag type="success">{{scope.row.serviceStatus}}</el-tag>
+                <el-tag v-if="scope.row.serviceStatus == 1" type="danger">收费</el-tag>
+                <el-tag v-else-if="scope.row.serviceStatus == 2" type="success">免费</el-tag>
+                <el-tag v-else-if="scope.row.serviceStatus == 3" type="info">关闭开放使用</el-tag>
               </template>
             </el-table-column>
             <el-table-column
@@ -180,31 +177,18 @@ export default {
       params.id = params.id || null
       this.$router.push({
         name: 'SoftForm',
-        params: params
+        query: params
       })
     },
     getTableData() {
 
       let data = this.seachForm
-      data.current = this.tablePageNum
-      data.size = this.tablePageSize
+      data.offset = this.tablePageNum
+      data.limit = this.tablePageSize
 
-      this.$axios.get('soft/page', {
-        params: data
-      }).then((rsp) => {
+      this.$axios.post('soft/page', this.$qs.stringify(data)).then((rsp) => {
         this.tableTotal = rsp.data.total
-        for (let i = 0; i < rsp.data.records.length; i++) {
-          rsp.data.records[i].createDate = time.timeStampDate({time:rsp.data.records[i].createDate})
-          rsp.data.records[i].updateDate = time.timeStampDate({time:rsp.data.records[i].updateDate})
-          if (rsp.data.records[i].serviceStatus == 0) {
-            rsp.data.records[i].serviceStatus = '收费'
-          } else if (rsp.data.records[i].serviceStatus == 1) {
-            rsp.data.records[i].serviceStatus = '免费'
-          } else if (rsp.data.records[i].serviceStatus == 2) {
-            rsp.data.records[i].serviceStatus = '关闭'
-          }
-        }
-        this.tableData = rsp.data.records
+        this.tableData = rsp.data.list
       })
     },
     handleSizeChange(val) {
@@ -229,19 +213,25 @@ export default {
     versionsUpdateRow(row) {
       this.$router.push({
         name: 'SoftVersionsForm',
-        params: {
-          versionsNum: row.versionsNum,
+        query: {
           id: row.id
         }
       })
     },
     removeRow(row) {
-      this.$axios.post('soft/remove', this.$qs.stringify({
-        softId: row.id
-      })).then((rsp) => {
-        this.search()
-        this.$message(rsp.msg)
-      })
+      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$axios.post('soft/delete', this.$qs.stringify({
+            id: row.id
+          })).then((rsp) => {
+            this.search()
+            this.$message(rsp.msg)
+          })
+        }).catch(() => {
+        });
     },
   }
 }

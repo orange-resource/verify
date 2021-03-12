@@ -38,22 +38,6 @@ export const constantRouterMap = [
   },
 
   {
-    path: '/interface',
-    component: Layout,
-    alwaysShow: true,
-    name: 'Interface',
-    redirect: 'noredirect',
-    meta: { title: '接口管理', icon: 'eye' },
-    children: [
-      {
-        path: 'interface_list',
-        name: 'InterfaceList',
-        component: () => import('@/views/interface/interface_list'),
-        meta: { title: '接口列表', icon: 'eye' }
-      },
-    ]
-  },
-  {
     path: '/soft',
     component: Layout,
     alwaysShow: true,
@@ -95,25 +79,25 @@ export const constantRouterMap = [
     alwaysShow: true,
     name: 'Log',
     redirect: 'noredirect',
-    meta: { title: '日志管理', icon: 'eye' },
+    meta: { title: '日志管理', icon: '日志' },
     children: [
       {
         path: 'soft_map',
         name: 'SoftMap',
         component: () => import('@/views/log/soft_map'),
-        meta: { title: '软件日志', icon: 'eye' }
+        meta: { title: '软件日志', icon: '日志' }
       },
       {
         path: 'soft_login_log_list',
         name: 'SoftLoginLogList',
         component: () => import('@/views/log/soft_login_log_list'),
-        meta: { title: '登陆日志', icon: 'eye' }
+        meta: { title: '登陆日志', icon: '日志' }
       },
       {
         path: 'soft_register_log_list',
         name: 'SoftRegisterLogList',
         component: () => import('@/views/log/soft_register_log_list'),
-        meta: { title: '注册日志', icon: 'eye' }
+        meta: { title: '注册日志', icon: '日志' }
       },
     ]
   },
@@ -180,17 +164,10 @@ export const constantRouterMap = [
     meta: { title: '配置管理', icon: '配置' },
     children: [
       {
-        path: 'email_account_list',
-        name: 'EmailAccountList',
-        component: () => import('@/views/config/email_account_list'),
-        meta: { title: '邮箱列表', icon: '邮箱' }
-      },
-      {
-        path: 'email_account_form',
-        name: 'EmailAccountForm',
-        hidden: true,
-        component: () => import('@/views/config/email_account_form'),
-        meta: { title: '邮箱操作', icon: 'table' }
+        path: 'dd_token_api_form',
+        name: 'DDTokenApiForm',
+        component: () => import('@/views/config/dd_token_api_form'),
+        meta: { title: '钉钉token', icon: '钉钉' }
       },
       {
         path: 'baidu_map_api_form',

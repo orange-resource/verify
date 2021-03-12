@@ -1,13 +1,14 @@
 import request from '@/utils/request'
+import qs from 'qs'
 
 export function login(username, password) {
   return request({
     url: '/user/login',
     method: 'post',
-    data: {
+    data: qs.stringify({
       username,
       password
-    }
+    })
   })
 }
 

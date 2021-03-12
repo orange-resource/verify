@@ -31,12 +31,13 @@ const user = {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
         login(username, userInfo.password).then(response => {
-          if (response.code == 100) {
+          if (response.code == 200) {
+            localStorage.setItem("token", response.data.token)
             Message.success("登陆成功");
             setToken("1")
             commit('SET_TOKEN', "1")
           } else {
-            Message.error("登陆失败");
+            Message.error(response.msg);
           }
           resolve()
         }).catch(error => {

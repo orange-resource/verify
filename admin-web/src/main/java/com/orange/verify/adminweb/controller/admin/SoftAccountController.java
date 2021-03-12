@@ -28,9 +28,8 @@ public class SoftAccountController {
     @ApiAuth(type = ApiAuthConstant.ADMIN_PLATFORM)
     @PostMapping(value = "/count")
     @ResponseBody
-    public Response count() {
-        int count = softAccountService.count();
-        return Response.build(RspCode.QUERY_SUCCESS, count);
+    public Response getCount() {
+        return softAccountService.getCount();
     }
 
     @ApiAuth(type = ApiAuthConstant.ADMIN_PLATFORM)

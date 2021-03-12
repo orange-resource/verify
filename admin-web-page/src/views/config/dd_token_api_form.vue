@@ -23,15 +23,18 @@
           </div>
 
           <el-alert
-            title="系统对接了百度地图开放平台，用于拿到用户的ip地理位置 百度开放平台：http://lbsyun.baidu.com/apiconsole/key"
+            title="这里的钉钉机器人配置, 主要作用于用户给软件留言之后自动通知到钉钉群"
             type="info" :closable="false">
           </el-alert>
           <br/>
           <el-form :model="form" :rules="forms" :status-icon="true"
                    ref="form" label-width="100px" class="demo-ruleForm">
 
-            <el-form-item label="appkey" prop="appkey">
-              <el-input v-model="form.appkey" class="common-width"></el-input>
+            <el-form-item label="secret" prop="secret">
+              <el-input v-model="form.secret" class="common-width"></el-input>
+            </el-form-item>
+            <el-form-item label="token" prop="token">
+              <el-input v-model="form.token" class="common-width"></el-input>
             </el-form-item>
 
             <el-form-item>
@@ -55,7 +58,7 @@
   export default {
     mounted() {
 
-      this.$axios.post("baiduMapToken/getDetail").then((rsp) => {
+      this.$axios.post("ddToken/getDetail").then((rsp) => {
         if (rsp.data.detail != null) {
           this.form = rsp.data.detail;
         }
@@ -69,12 +72,16 @@
 
         //表单配置
         form: {
-          appkey: '',
+          secret: '',
+          token: ''
         },
         forms: {
-          appkey: [
-            {required: true, message: '请填写appkey', trigger: 'blur'},
+          secret: [
+            { required: true, message: '请填写secret', trigger: 'blur' },
           ],
+          token: [
+            { required: true, message: '请填写token', trigger: 'blur' },
+          ]
         },
 
       }
@@ -92,12 +99,11 @@
         });
       },
       submit() {
-
         let data = this.form;
 
         this.$axios({
           method: 'post',
-          url: "baiduMapToken/update",
+          url: "ddToken/update",
           data:this.$qs.stringify(data),
         }).then((rsp) => {
           this.$message(rsp.msg);
@@ -107,6 +113,7 @@
         this.$refs[formName].resetFields();
       },
     }
+    
   }
 </script>
 

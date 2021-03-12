@@ -16,7 +16,8 @@ let load;
 service.interceptors.request.use(
   config => {
     if (store.getters.token) {
-      // config.headers['X-Token'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
+      console.log(localStorage.getItem("token"))
+      config.headers['authorization'] = localStorage.getItem("token") // 让每个请求携带自定义token 请根据实际情况自行修改
     }
     load = Loading.service({
       lock: true,
@@ -40,12 +41,14 @@ service.interceptors.response.use(
     load.close();
 
     const res = response.data
-    if (res.code == 12) {
+    if (res.code == 401) {
 
       Message.error("登陆失效，请重新登陆")
-      store.dispatch('FedLogOut').then(() => {
-        location.reload()
-      })
+      setTimeout(() => {
+        store.dispatch('FedLogOut').then(() => {
+          location.reload()
+        })
+      }, 1500)
 
     }
 

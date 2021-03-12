@@ -65,9 +65,6 @@
             </el-button>
           </div>
 
-          <!--按钮操作区-->
-          <el-button type="primary" @click="openForm"><i class="el-icon-plus"/> 添加</el-button>
-
           <!--表格展示区-->
           <el-table
             :data="tableData"
@@ -145,7 +142,7 @@ export default {
     }
   },
   mounted() {
-    this.$axios.get('soft/list').then((rsp) => {
+    this.$axios.post('soft/getList').then((rsp) => {
       this.softList.push({
         label: "全部",
         value: "",
@@ -163,12 +160,10 @@ export default {
     getTableData() {
 
       let data = this.seachForm
-      data.current = this.tablePageNum
-      data.size = this.tablePageSize
+      data.offset = this.tablePageNum
+      data.limit = this.tablePageSize
 
-      this.$axios.get('accountRegisterLog/page', {
-        params: data
-      }).then((rsp) => {
+      this.$axios.get('accountRegisterLog/page', this.$qs.stringify(data)).then((rsp) => {
         this.tableTotal = rsp.data.total
         for (let i = 0; i < rsp.data.records.length; i++) {
           rsp.data.records[i].createDate = time.timeStampDate({time:rsp.data.records[i].createDate});

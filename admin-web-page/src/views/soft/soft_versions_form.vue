@@ -46,15 +46,15 @@
               <el-input v-model="form.updateUrl" class="common-width"></el-input>
             </el-form-item>
 
-            <el-form-item label="是否强制更新" prop="novatioNecessaria">
-              <el-radio-group v-model="form.novatioNecessaria" size="medium">
-                <el-radio border :label=0 >不强制</el-radio>
-                <el-radio border :label=1 >强制</el-radio>
+            <el-form-item label="是否强制更新" prop="forcedStatus">
+              <el-radio-group v-model="form.forcedStatus" size="medium">
+                <el-radio border :label=1 >不强制</el-radio>
+                <el-radio border :label=2 >强制</el-radio>
               </el-radio-group>
             </el-form-item>
 
             <el-form-item>
-              <el-button type="primary" @click="submitForm('form')">{{ formButtonName }}</el-button>
+              <el-button type="primary" @click="submitForm('form')">提交</el-button>
               <el-button @click="resetForm('form')">重置</el-button>
             </el-form-item>
 
@@ -74,17 +74,16 @@
   export default {
     mounted() {
 
-      if (this.$route.params.versionsNum != null) {
-        this.$axios.get("softVersions/getSingleBySoftId",{
-          params: {
-            softId: this.$route.params.id,
+      if (this.$route.query.id != null) {
+        this.$axios.post("softVersion/getDetail", this.$qs.stringify({
+          softId: this.$route.query.id
+        })).then((rsp) => {
+          if (rsp.data.detail != null) {
+            this.form = rsp.data.detail;
+            delete this.form.createAt;
+            delete this.form.updateAt;
           }
-        }).then((rsp) => {
-          this.id = rsp.data.id;
-          this.form =rsp.data;
         });
-
-        this.formButtonName = '立即保存';
       }
 
     },
@@ -99,7 +98,7 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            if (this.$route.params.versionsNum != null) {
+            if (this.$route.query.id != null && this.form.id != undefined) {
               this.submit(true);
             } else {
               this.submit(false);
@@ -114,19 +113,22 @@
 
         let data = this.form;
 
-        let url = "softVersions/create";
-        data.softId = this.$route.params.id;
+        let url = "softVersion/create";
+        data.softId = this.$route.query.id;
         if (isUpdate == true) {
-          data.id = this.id;
-          url = "softVersions/update";
+          url = "softVersion/update";
         }
 
         this.$axios({
           method: 'post',
           url: url,
-          data:this.$qs.stringify(data),
+          data: this.$qs.stringify(data),
         }).then((rsp) => {
           this.$message(rsp.msg);
+
+          if (rsp.code == 200) {
+            this.openExpress();
+          }
         });
       },
       resetForm(formName) {
@@ -138,20 +140,16 @@
         //收起放下
         searchWorkspace: true,
 
-        formButtonName: '立即创建',
-
-        id: 0,
-
         //表单配置
         form: {
           number: '',
           notice: '',
-          novatioNecessaria: 0,
+          forcedStatus: 1,
           updateUrl: '',
         },
         forms: {
           number: [
-            {required: true, message: '请填写版本号', trigger: 'blur'},
+            { required: true, message: '请填写版本号', trigger: 'blur' },
           ],
         },
 

@@ -65,6 +65,15 @@ public class SoftAccountService extends ServiceImpl<SoftAccountMapper, SoftAccou
         return Response.build(RspCode.QUERY_SUCCESS, build);
     }
 
+    public Response getCount() {
+        int count = super.count();
+        Map<String, Object> build = ResultBuilder
+                .create()
+                .setCount(count)
+                .build();
+        return Response.build(RspCode.QUERY_SUCCESS, build);
+    }
+
     public Response blacklist(String id, Integer blacklist) {
         SoftAccountPO softAccountPO = new SoftAccountPO();
         softAccountPO.setId(id);

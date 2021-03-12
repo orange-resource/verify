@@ -33,7 +33,11 @@ public class CardService extends ServiceImpl<CardMapper, CardPO> {
 
     public Response getCount() {
         int count = super.baseMapper.selectCount();
-        return Response.build(RspCode.QUERY_SUCCESS, count);
+        Map<String, Object> build = ResultBuilder
+                .create()
+                .setCount(count)
+                .build();
+        return Response.build(RspCode.QUERY_SUCCESS, build);
     }
 
     public Response batchCreate(String cardTypeId, Integer count) {

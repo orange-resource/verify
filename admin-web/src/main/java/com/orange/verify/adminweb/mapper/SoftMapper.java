@@ -27,4 +27,7 @@ public interface SoftMapper extends BaseMapper<SoftPO>, BaseTableName {
             "</script>")
     List<SoftPageResultVO> selectListByPage(@Param("softName") String softName, Page page);
 
+    @Select("select * from" + t_soft_space + "order by create_at desc")
+    List<SoftPO> selectListBySort();
+
 }

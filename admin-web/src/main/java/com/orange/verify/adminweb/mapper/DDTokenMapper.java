@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface DDTokenMapper extends BaseMapper<DDTokenPO>, BaseTableName {
 
-    @Select("select * from" + t_dingding_token_space + "order by create_at desc")
-    List<DDTokenPO> selectListBySort();
+    @Select("select * from" + t_dingding_token_space + "limit 1")
+    DDTokenPO selectOne();
 
 }

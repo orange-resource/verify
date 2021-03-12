@@ -70,7 +70,7 @@ export default {
       registerDateMap.set(date[i],0);
     }
 
-    this.$axios.get("accountLoginLog/getBeforeData?softId=").then((rsp) => {
+    this.$axios.post("accountLoginLog/getBeforeData").then((rsp) => {
       for (let i = 0;i < rsp.data.length;i++) {
         let data = rsp.data[i].split(" ");
         let d = data[0];
@@ -89,7 +89,7 @@ export default {
       let login = this.$echarts.init(document.getElementById("login"));
       login.setOption(this.loginbar);
     })
-    this.$axios.get("accountRegisterLog/getBeforeData?softId=").then((rsp) => {
+    this.$axios.post("accountRegisterLog/getBeforeData").then((rsp) => {
       for (let i = 0;i < rsp.data.length;i++) {
         let data = rsp.data[i].split(" ");
         let d = data[0];
@@ -109,16 +109,14 @@ export default {
       register.setOption(this.registerbar);
     })
 
-
-
-    this.$axios.get("soft/count").then((rsp) => {
-      this.softCount = rsp.data
+    this.$axios.post("soft/count").then((rsp) => {
+      this.softCount = rsp.data.count
     })
-    this.$axios.get("card/count").then((rsp) => {
-      this.cardCount = rsp.data
+    this.$axios.post("card/count").then((rsp) => {
+      this.cardCount = rsp.data.count
     })
-    this.$axios.get("account/count").then((rsp) => {
-      this.accountCount = rsp.data
+    this.$axios.post("account/count").then((rsp) => {
+      this.accountCount = rsp.data.count
     })
 
   },

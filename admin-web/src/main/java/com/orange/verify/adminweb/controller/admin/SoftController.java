@@ -26,6 +26,13 @@ public class SoftController {
     }
 
     @ApiAuth(type = ApiAuthConstant.ADMIN_PLATFORM)
+    @PostMapping(value = "/getList")
+    @ResponseBody
+    public Response getList() {
+        return softService.getList();
+    }
+
+    @ApiAuth(type = ApiAuthConstant.ADMIN_PLATFORM)
     @PostMapping(value = "/count")
     @ResponseBody
     public Response getCount() {

@@ -71,7 +71,7 @@
             border
             style="width: 100%;margin-top: 10px">
             <el-table-column
-              prop="createDate"
+              prop="createAt"
               label="创建时间"
               align="center"
             />
@@ -158,7 +158,7 @@
       }
     },
     mounted() {
-      this.$axios.get('soft/list').then((rsp) => {
+      this.$axios.post('soft/getList').then((rsp) => {
         this.softList.push({
           label: "全部",
           value: "",
@@ -176,17 +176,12 @@
       getTableData() {
 
         let data = this.seachForm
-        data.current = this.tablePageNum
-        data.size = this.tablePageSize
+        data.offset = this.tablePageNum
+        data.limit = this.tablePageSize
 
-        this.$axios.get('softLeaveMessage/page', {
-          params: data
-        }).then((rsp) => {
+        this.$axios.post('softLeaveMessage/page', this.$qs.stringify(data)).then((rsp) => {
           this.tableTotal = rsp.data.total
-          for (let i = 0; i < rsp.data.records.length; i++) {
-            rsp.data.records[i].createDate = time.timeStampDate({time:rsp.data.records[i].createDate});
-          }
-          this.tableData = rsp.data.records
+          this.tableData = rsp.data.list
         })
       },
       handleSizeChange(val) {
@@ -209,12 +204,19 @@
         this.openForm({ id: row.id })
       },
       removeRow(row) {
-        this.$axios.post('softLeaveMessage/remove', this.$qs.stringify({
-          softLeaveMessageId: row.id
-        })).then((rsp) => {
-          this.getTableData();
-          this.$message(rsp.msg)
-        })
+        this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$axios.post('softLeaveMessage/delete', this.$qs.stringify({
+            id: row.id
+          })).then((rsp) => {
+            this.getTableData();
+            this.$message(rsp.msg)
+          })
+        }).catch(() => {
+        });
       },
     }
   }

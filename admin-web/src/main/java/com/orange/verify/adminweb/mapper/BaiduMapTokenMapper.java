@@ -9,10 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BaiduMapTokenMapper extends BaseMapper<BaiduMapTokenPO>, BaseTableName {
 
-    @Select("select count(*) from" + t_baidu_map_token_space)
-    int selectCount();
-
-    @Select("select * from" + t_baidu_map_token_space + "where id = '1'")
-    BaiduMapTokenPO selectSingle();
+    @Select("select * from" + t_baidu_map_token_space + "limit 1")
+    BaiduMapTokenPO selectOne();
 
 }

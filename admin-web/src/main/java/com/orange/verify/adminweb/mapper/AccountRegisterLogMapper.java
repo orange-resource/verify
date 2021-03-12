@@ -17,18 +17,18 @@ public interface AccountRegisterLogMapper extends BaseMapper<AccountRegisterLogP
 
     // 找出以往7天到现在的数据
     @Select("<script>" +
-            "SELECT FROM_UNIXTIME(ROUND(create_date / 1000)) AS TIME FROM" + t_account_register_log_space +
+            "SELECT create_at AS TIME FROM" + t_account_register_log_space +
             "WHERE " +
-            "<![CDATA[ TO_DAYS(NOW()) - TO_DAYS(FROM_UNIXTIME(create_at/1000)) >= 0 " +
+            "<![CDATA[ TO_DAYS(NOW()) - TO_DAYS(create_at) >= 0 " +
             "AND " +
-            "TO_DAYS(NOW()) - TO_DAYS(FROM_UNIXTIME(create_at/1000)) <= 7 ]]> " +
+            "TO_DAYS(NOW()) - TO_DAYS(create_at) <= 7 ]]> " +
             "<if test=\"softId != null and softId != ''\"> and soft_id = #{softId} </if>" +
             "ORDER BY create_at ASC " +
             "</script>")
     List<String> selectBeforeData(@Param("softId") String softId);
 
     @Delete("delete from" + t_account_register_log_space +
-            "where TO_DAYS(NOW()) - TO_DAYS(FROM_UNIXTIME(create_at/1000)) >= 10\n" +
+            "where DATE_SUB(now(), INTERVAL 7 DAY) >= create_at " +
             "limit 100")
     int deleteLog();
 

@@ -35,7 +35,7 @@ public enum RspCode {
     CONTENT_IS_TOO_LARGE(413, "提交内容过大"),
 
     SYSTEM_ERROR(500, "系统错误"),
-    UNKNOWN(500, "发生了一个未知错误"),
+    UNKNOWN(500, "服务器发生了一个未知错误"),
 
     // 成功返回
     LOGIN_SUCCESS(200, "登录成功"),

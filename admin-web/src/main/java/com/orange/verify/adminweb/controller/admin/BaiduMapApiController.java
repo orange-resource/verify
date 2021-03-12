@@ -22,17 +22,17 @@ public class BaiduMapApiController {
     private BaiduMapService baiduMapService;
 
     @ApiAuth(type = ApiAuthConstant.ADMIN_PLATFORM)
-    @PostMapping(value = "/getConfig")
+    @PostMapping(value = "/getDetail")
     @ResponseBody
-    public Response getConfig() {
-        return baiduMapService.getConfig();
+    public Response getDetail() {
+        return baiduMapService.getDetail();
     }
 
     @ApiAuth(type = ApiAuthConstant.ADMIN_PLATFORM)
-    @PostMapping(value = "save")
+    @PostMapping(value = "/update")
     @ResponseBody
-    public Response save(BaiduMapTokenPO baiduMapTokenPO) {
-        return baiduMapService.save(baiduMapTokenPO);
+    public Response update(BaiduMapTokenPO baiduMapTokenPO) {
+        return baiduMapService.update(baiduMapTokenPO);
     }
 
 }

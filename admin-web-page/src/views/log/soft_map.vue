@@ -62,15 +62,15 @@
 export default {
   mounted() {
 
-    this.$axios.get('soft/list').then((rsp) => {
+    this.$axios.get('soft/getList').then((rsp) => {
       this.softList.push({
         label: "全部",
         value: "",
       });
-      for (let i = 0;i < rsp.data.length;i++) {
+      for (let i = 0;i < rsp.data.list.length;i++) {
         this.softList.push({
-          label: rsp.data[i].name,
-          value: rsp.data[i].id,
+          label: rsp.data.list[i].name,
+          value: rsp.data.list[i].id,
         });
       }
     });
@@ -214,7 +214,9 @@ export default {
         registerDateMap.set(date[i],0);
       }
 
-      this.$axios.get("accountLoginLog/getBeforeData?softId="+softId).then((rsp) => {
+      this.$axios.post("accountLoginLog/getBeforeData", this.$qs.stringify({
+        softId
+      })).then((rsp) => {
         for (let i = 0;i < rsp.data.length;i++) {
           let data = rsp.data[i].split(" ");
           let d = data[0];
@@ -234,7 +236,9 @@ export default {
         let login = this.$echarts.init(document.getElementById("login"));
         login.setOption(this.loginbar);
       })
-      this.$axios.get("accountRegisterLog/getBeforeData?softId="+softId).then((rsp) => {
+      this.$axios.post("accountRegisterLog/getBeforeData", this.$qs.stringify({
+        softId
+      })).then((rsp) => {
         for (let i = 0;i < rsp.data.length;i++) {
           let data = rsp.data[i].split(" ");
           let d = data[0];

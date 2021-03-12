@@ -35,6 +35,15 @@ public class SoftService extends ServiceImpl<SoftMapper, SoftPO> {
         return Response.build(RspCode.QUERY_SUCCESS, build);
     }
 
+    public Response getList() {
+        List<SoftPO> softPOList = super.baseMapper.selectListBySort();
+        Map<String, Object> build = ResultBuilder
+                .create()
+                .setList(softPOList)
+                .build();
+        return Response.build(RspCode.QUERY_SUCCESS, build);
+    }
+
     public Response getCount() {
         int count = super.count();
         Map<String, Object> build = ResultBuilder

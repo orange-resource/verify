@@ -20,11 +20,11 @@ public class BaiduIpUtil {
 
     private String ak = "";
 
-    public static BaiduIpUtil start(String ak) {
-        return new BaiduIpUtil().init(ak);
+    public static BaiduIpUtil init(String appKey) {
+        return new BaiduIpUtil().initAppKey(appKey);
     }
 
-    private BaiduIpUtil init(String ak) {
+    private BaiduIpUtil initAppKey(String ak) {
         this.ak = ak;
         return this;
     }

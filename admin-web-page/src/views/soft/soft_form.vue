@@ -42,41 +42,30 @@
               </el-input>
             </el-form-item>
 
-            <el-form-item label="换绑策略" prop="changeStrategy">
-              <el-radio-group v-model="form.changeStrategy" size="medium">
-                <el-radio border :label=0 >支持换绑定</el-radio>
-                <el-radio border :label=1 >不支持换绑定</el-radio>
+            <el-form-item label="换绑策略" prop="changeStrategyType">
+              <el-radio-group v-model="form.changeStrategyType" size="medium">
+                <el-radio border :label=1 >支持换绑定</el-radio>
+                <el-radio border :label=2 >不支持换绑定</el-radio>
               </el-radio-group>
             </el-form-item>
 
-            <el-form-item label="多开策略" prop="dosingStrategy">
-              <el-radio-group v-model="form.dosingStrategy" size="medium">
-                <el-radio border :label=0 >只支持单机</el-radio>
-                <el-radio border :label=1 >无限制</el-radio>
+            <el-form-item label="多开策略" prop="dosingStrategyType">
+              <el-radio-group v-model="form.dosingStrategyType" size="medium">
+                <el-radio border :label=1 >只支持单机</el-radio>
+                <el-radio border :label=2 >无限制</el-radio>
               </el-radio-group>
-            </el-form-item>
-
-            <el-form-item label="软件被留言 是否邮件通知" prop="emailNotificatio">
-              <el-radio-group v-model="form.emailNotificatio" size="medium">
-                <el-radio border :label=0 @change="emailNotificatio = true">通知</el-radio>
-                <el-radio border :label=1 @change="emailNotificatio = false">不通知</el-radio>
-              </el-radio-group>
-            </el-form-item>
-
-            <el-form-item v-if="emailNotificatio == true" label="被通知的邮箱账户名" prop="emailName">
-              <el-input v-model="form.emailName" class="common-width"></el-input>
             </el-form-item>
 
             <el-form-item label="注册状态" prop="registerStatus">
               <el-radio-group v-model="form.registerStatus" size="medium">
-                <el-radio border :label=0 @change="registerStatus = true">开放注册</el-radio>
-                <el-radio border :label=1 @change="registerStatus = false">关闭注册</el-radio>
+                <el-radio border :label=1 @change="registerStatus = true">开放注册</el-radio>
+                <el-radio border :label=2 @change="registerStatus = false">关闭注册</el-radio>
               </el-radio-group>
             </el-form-item>
 
-            <el-form-item v-if="registerStatus == false" label="关闭注册后的返回信息" prop="registeCloseMsg">
+            <el-form-item v-if="registerStatus == false" label="关闭注册后的返回信息" prop="registerCloseMsg">
               <el-input
-                v-model="form.registeCloseMsg"
+                v-model="form.registerCloseMsg"
                 class="common-width"
                 type="textarea"
                 :rows="4"
@@ -87,15 +76,15 @@
 
             <el-form-item label="服务状态" prop="serviceStatus">
               <el-radio-group v-model="form.serviceStatus" size="medium">
-                <el-radio border :label=0 @change="serviceStatus = true">收费</el-radio>
-                <el-radio border :label=1 @change="serviceStatus = true">免费开放</el-radio>
-                <el-radio border :label=2 @change="serviceStatus = false">关闭开放使用</el-radio>
+                <el-radio border :label=1 @change="serviceStatus = true">收费</el-radio>
+                <el-radio border :label=2 @change="serviceStatus = true">免费开放</el-radio>
+                <el-radio border :label=3 @change="serviceStatus = false">关闭开放使用</el-radio>
               </el-radio-group>
             </el-form-item>
 
-            <el-form-item v-if="serviceStatus == false" label="关闭状态下的返回信息" prop="serviceCloseMsg">
+            <el-form-item v-if="serviceStatus == false" label="关闭状态下的返回信息" prop="appCloseMsg">
               <el-input
-                v-model="form.serviceCloseMsg"
+                v-model="form.appCloseMsg"
                 class="common-width"
                 type="textarea"
                 :rows="4"
@@ -105,7 +94,7 @@
             </el-form-item>
 
             <el-form-item>
-              <el-button type="primary" @click="submitForm('form')">{{ formButtonName }}</el-button>
+              <el-button type="primary" @click="submitForm('form')">提交</el-button>
               <el-button @click="resetForm('form')">重置</el-button>
             </el-form-item>
 
@@ -125,26 +114,21 @@
   export default {
     mounted() {
 
-      if (this.$route.params.id != null) {
+      if (this.$route.query.id != null) {
 
-        this.$axios.get("soft/single",{
-          params: {
-            softId: this.$route.params.id,
-          }
-        }).then((rsp) => {
-          this.form =rsp.data;
-          if (rsp.data.emailNotificatio == 1) {
-            this.emailNotificatio = false;
-          }
-          if (rsp.data.registerStatus == 1) {
+        this.$axios.post("soft/getDetail", this.$qs.stringify({
+          id: this.$route.query.id
+        })).then((rsp) => {
+          this.form = rsp.data.detail;
+          delete this.form.createAt;
+          delete this.form.updateAt;
+          if (rsp.data.detail.registerStatus == 2) {
             this.registerStatus = false;
           }
-          if (rsp.data.serviceStatus == 2) {
+          if (rsp.data.detail.serviceStatus == 3) {
             this.serviceStatus = false;
           }
         });
-
-        this.formButtonName = '立即保存';
       }
 
     },
@@ -159,7 +143,7 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            if (this.$route.params.id != null) {
+            if (this.$route.query.id != null) {
               this.submit(true);
             } else {
               this.submit(false);
@@ -176,14 +160,13 @@
 
         let url = "soft/create";
         if (isUpdate == true) {
-          data.id = this.$route.params.id;
           url = "soft/update";
         }
 
         this.$axios({
           method: 'post',
           url: url,
-          data:this.$qs.stringify(data),
+          data: this.$qs.stringify(data),
         }).then((rsp) => {
           this.$message(rsp.msg);
         });
@@ -197,9 +180,6 @@
         //收起放下
         searchWorkspace: true,
 
-        formButtonName: '立即创建',
-
-        emailNotificatio: true,
         registerStatus: true,
         serviceStatus: true,
 
@@ -207,14 +187,12 @@
         form: {
           name: '',
           notice: '',
-          changeStrategy: 0,
-          dosingStrategy: 0,
-          emailNotificatio: 0,
-          emailName: '',
-          registerStatus: 0,
-          registeCloseMsg: '',
-          serviceStatus: 1,
-          serviceCloseMsg: '',
+          changeStrategyType: 1,
+          dosingStrategyType: 1,
+          registerStatus: 1,
+          registerCloseMsg: '',
+          serviceStatus: 2,
+          appCloseMsg: '',
         },
         forms: {
           name: [
@@ -224,30 +202,23 @@
             {required: true, message: '请填写软件公告', trigger: 'blur'},
             {min: 1, max: 255, message: '长度在 1 到 255 个字符', trigger: 'blur'}
           ],
-          changeStrategy: [
+          changeStrategyType: [
             {required: true, message: '请勾选换绑策略', trigger: 'blur'},
           ],
-          dosingStrategy: [
+          dosingStrategyType: [
             {required: true, message: '请勾选多开策略', trigger: 'blur'},
-          ],
-          emailNotificatio: [
-            {required: true, message: '请勾选多开策略', trigger: 'blur'},
-          ],
-          emailName: [
-            { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-            { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
           ],
           registerStatus: [
             {required: true, message: '请勾选注册状态', trigger: 'blur'},
           ],
-          registeCloseMsg: [
+          registerCloseMsg: [
             {required: true, message: '请填写关闭注册后的返回信息', trigger: 'blur'},
             {min: 1, max: 255, message: '长度在 1 到 255 个字符', trigger: 'blur'}
           ],
           serviceStatus: [
             {required: true, message: '请勾选服务状态', trigger: 'blur'},
           ],
-          serviceCloseMsg: [
+          appCloseMsg: [
             {required: true, message: '请填写关闭状态下的返回信息', trigger: 'blur'},
             {min: 1, max: 255, message: '长度在 1 到 255 个字符', trigger: 'blur'}
           ],
