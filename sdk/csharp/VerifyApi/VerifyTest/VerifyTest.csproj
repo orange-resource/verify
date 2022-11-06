@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0A32D802-5CDA-4D85-93DD-E44D297F3318}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>VerifyTest</RootNamespace>
+    <AssemblyName>VerifyTest</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoUpdater.NET, Version=1.5.1.0, Culture=neutral, PublicKeyToken=501435c91b35f4bc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autoupdater.NET.Official.1.5.1\lib\net40\AutoUpdater.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="INIFileParser, Version=2.5.2.0, Culture=neutral, PublicKeyToken=79af7b307b65cf3c, processorArchitecture=MSIL">
+      <HintPath>..\packages\ini-parser.2.5.2\lib\net20\INIFileParser.dll</HintPath>
+    </Reference>
+    <Reference Include="IrisSkin4">
+      <HintPath>C:\Users\10673\Downloads\IrisSkin4\IrisSkin4.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="loading\FrmLoading.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="loading\FrmLoading.designer.cs">
+      <DependentUpon>FrmLoading.cs</DependentUpon>
+    </Compile>
+    <Compile Include="loading\LoadingDot.cs" />
+    <Compile Include="loading\LoadingHelper.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="verify\data\InitVerify.cs" />
+    <Compile Include="verify\util\FileOp.cs" />
+    <Compile Include="verify\VerifyBinding.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="verify\VerifyBinding.Designer.cs">
+      <DependentUpon>VerifyBinding.cs</DependentUpon>
+    </Compile>
+    <Compile Include="verify\VerifyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="verify\VerifyForm.Designer.cs">
+      <DependentUpon>VerifyForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="verify\data\VerifyOverAll.cs" />
+    <Compile Include="verify\VerifyRedeem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="verify\VerifyRedeem.Designer.cs">
+      <DependentUpon>VerifyRedeem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="verify\VerifyRegisterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="verify\VerifyRegisterForm.Designer.cs">
+      <DependentUpon>VerifyRegisterForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="verify\VerifyReward.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="verify\VerifyReward.Designer.cs">
+      <DependentUpon>VerifyReward.cs</DependentUpon>
+    </Compile>
+    <Compile Include="verify\VerifyUpdatePassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="verify\VerifyUpdatePassword.Designer.cs">
+      <DependentUpon>VerifyUpdatePassword.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="loading\FrmLoading.resx">
+      <DependentUpon>FrmLoading.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="verify\VerifyBinding.resx">
+      <DependentUpon>VerifyBinding.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="verify\VerifyForm.resx">
+      <DependentUpon>VerifyForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="verify\VerifyRedeem.resx">
+      <DependentUpon>VerifyRedeem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="verify\VerifyRegisterForm.resx">
+      <DependentUpon>VerifyRegisterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="verify\VerifyReward.resx">
+      <DependentUpon>VerifyReward.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="verify\VerifyUpdatePassword.resx">
+      <DependentUpon>VerifyUpdatePassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="Resources\PageColor1.ssk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VerifyApi\VerifyApi.csproj">
+      <Project>{48723ed4-c813-492f-ad4d-1cb641f0c065}</Project>
+      <Name>VerifyApi</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ico\20190616034951182_easyicon_net_32.ico" />
+    <Content Include="ico\20190616035106711_easyicon_net_48.ico" />
+    <Content Include="verify\image\IMG_0832.JPG" />
+    <Content Include="verify\image\IMG_0833.JPG" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
